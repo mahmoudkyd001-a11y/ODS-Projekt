@@ -25,7 +25,7 @@ var Print func(v ...interface{})
 var Printf func(format string, v ...interface{})
 
 // Setup the logger with or without debugging
-func Setup(name string, service string, logFilename string, logJSON boolean, lokiServer string, lokiKey string, labels map[string]string, size int8, timeout int, debug bool) {
+func Setup(name string, service string, logFilename string, logJSON bool, lokiServer string, lokiKey string, labels map[string]string, size int8, timeout int, debug bool) {
 	// the multi logger
 	log = logger.ZeroLog{}
 
