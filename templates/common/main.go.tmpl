@@ -54,12 +54,14 @@ func main() {
 		<-sig
 		log.Info().Msg("main received shutdown signal")
 		cancel() // trigger shutdown of everything else
+		{{- if .AddFrontend}}
 		core.SseServer.Close()
+        {{- end}}
 		echoCancel() // trigger shutdown echo
 	}()
 
 	flag.Parse()
-	log.Setup(core.AppConfig.Name, core.Service, core.AppConfig.LogFile, core.AppConfig.LokiServer, core.AppConfig.LokiKey, core.AppConfig.LokiLabels, core.AppConfig.LokiBuffersize, core.AppConfig.LokiMaxDelay, core.AppConfig.Debug)
+	log.Setup(core.AppConfig.Name, core.Service, core.AppConfig.LogFile, core.AppConfig.LogJson, core.AppConfig.LokiServer, core.AppConfig.LokiKey, core.AppConfig.LokiLabels, core.AppConfig.LokiBuffersize, core.AppConfig.LokiMaxDelay, core.AppConfig.Debug)
 
 	// init Opentelemetry
     if core.AppConfig.Tracing {
@@ -88,9 +90,11 @@ func main() {
 	e.Use(middleware.CORSConfigFromEnv()) // set custom cors config
 
 	// custom main, start async so it can wait on shutdown signal for cleanup
-    go mainSvc(ctx)
+    go mainSvc(ctx, e)
 
 	{{- if .OpenAPI }}
+
+	// add middleware
 	e.Use(middleware.LoggerHandler)
 	// e.Use(otelecho.Middleware(core.AppConfig.Sid))
 	// e.Use(middleware.PolicyHandler) // Policy Enforcement Point to check access

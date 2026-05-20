@@ -32,10 +32,10 @@ _dredger_ is a command line tool:
 
     Available Commands:
 
--   completion Generate the autocompletion script for the specified shell
--   generate Create server and client API code from OpenApi Spec
--   generate-bdd Create BDD test file from the feature file
--   help Help about any command
+- completion Generate the autocompletion script for the specified shell
+- generate Create server and client API code from OpenApi Spec
+- generate-bdd Create BDD test file from the feature file
+- help Help about any command
 
 Flags:
 -h, --help help for dredger
@@ -43,16 +43,16 @@ Generates a REST API template from a given OpenAPI Specification file. Let's tak
 
 You can check how the file looks like <a href="./examples/stores.yaml">here</a></br>
 
--   Step 1: We navigate to the repository folder
--   Step 2: Run the command `go run main.go generate ./examples/stores.yaml -o ./build -n build -f -D`. A description of the flags can be found below.
--   Step 3: We can now navigate to the output folder (in this case `build`) and run `go run main.go` to launch the REST API.
+- Step 1: We navigate to the repository folder
+- Step 2: Run the command `go run main.go generate ./examples/stores/stores.yaml -o ./build -n build -f -D`. A description of the flags can be found below.
+- Step 3: We can now navigate to the output folder (in this case `build`) and run `go run main.go` to launch the REST API.
 
 Generation flags:
 
--   `-f`               Add frontend code.
--   `-o [Output path]` Specifies the output path for the generated REST API.
--   `-n [Module name]` Specifies the go module name.
--   `-D`               Generates boilerplate code for a basic SQLite database.
+- `-f` Add frontend code.
+- `-o [Output path]` Specifies the output path for the generated REST API.
+- `-n [Module name]` Specifies the go module name.
+- `-D` Generates boilerplate code for a basic SQLite database.
 
 For typical tasks you can use the [just](https://just.systems/man/en/) recipes:
 
@@ -69,10 +69,10 @@ For typical tasks you can use the [just](https://just.systems/man/en/) recipes:
     tools              # Install additionally required tools
     update             # Update required tools and libraries
 
--   `just generate OPEN_API_PATH=path/to/open-api-file`. This command will generate the minimum project structure (no optional flags are set). The parameter `OPEN_API_PATH` is required.
--   `just generate-all-flags OPEN_API_PATH=path/to/open-api-file MODULE_NAME=module-name`. This command will generate the maximum project structure (all optional flags are set). The parameter `OPEN_API_PATH` is required.
--   `just build OUTPUT_NAME=executable-name`. This command will build an executable which can be used by the developer outside of the project repository.
--   `just test`. This command runs the unit tests for the generator.
+- `just generate OPEN_API_PATH=path/to/open-api-file`. This command will generate the minimum project structure (no optional flags are set). The parameter `OPEN_API_PATH` is required.
+- `just generate-all-flags OPEN_API_PATH=path/to/open-api-file MODULE_NAME=module-name`. This command will generate the maximum project structure (all optional flags are set). The parameter `OPEN_API_PATH` is required.
+- `just build OUTPUT_NAME=executable-name`. This command will build an executable which can be used by the developer outside of the project repository.
+- `just test`. This command runs the unit tests for the generator.
 
 # Examples
 
@@ -96,6 +96,7 @@ whether a file is an OpenAPI or AsyncAPI specification:
 go run main.go generate ./examples/stores/stores.yaml \
   ./examples/simple/asyncapiv3.json -o ./build-both -n multi-service
 ```
+
 When copying the command ensure that the line break uses a `\` at the end of the
 first line **without any trailing spaces**, otherwise an extra argument may be
 passed to the CLI.
@@ -113,7 +114,7 @@ generated.
 # Limitations
 
 - Add a AsyncAPI Info Title if multiple specs are used! (You can have one spec file without one)
-- For multiple AsyncAPI files, only the public `index.html` for the last spec is generated 
+- For multiple AsyncAPI files, only the public `index.html` for the last spec is generated
 
 # Contributions
 
