@@ -32,5 +32,5 @@ func GetIndex(c *echo.Context) error {
 	 */
 
 	lzr := i18n.NewLocalizer(core.Bundle, core.Language(c))
-	return Render(c, http.StatusOK, pages.Index(lzr, config.AppConfig.Title))
+	return Render(c, http.StatusOK, pages.Index(lzr, core.AppConfig.Title))
 }

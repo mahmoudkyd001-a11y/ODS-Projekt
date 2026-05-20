@@ -39,7 +39,9 @@ func {{ .OperationID }}(c *echo.Context) error {
 	}
 	 */
 
+	/* Remove this comment to use localization
 	lzr := i18n.NewLocalizer(core.Bundle, core.Language(c))
+	*/
 
     {{- if eq .Method "POST" "PUT" "PATCH" }}
 
