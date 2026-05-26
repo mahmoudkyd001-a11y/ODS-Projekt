@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"slices"
+	"sort" 
 	"strconv"
 	"strings"
 
@@ -228,9 +229,26 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
 						tmpPropertyConf.UIGroup = propStr[start:end]
 					}
 
+                    if strings.Contains(propStr, "\"x-ui-order\":") {
+                            start := strings.Index(propStr, "\"x-ui-order\":") + len("\"x-ui-order\":")
+                            end := start
+                    		for end < len(propStr) && propStr[end] != ',' && propStr[end] != '}' {
+                                    end++
+                            }
+                            orderStr := strings.TrimSpace(propStr[start:end])
+                            if order, err := strconv.Atoi(orderStr); err == nil {
+                                    tmpPropertyConf.UIOrder = order
+                            }
+                    }
+
 					schema.Properties = append(schema.Properties, tmpPropertyConf)
 				}
+				
+				sort.Slice(schema.Properties, func(i, j int) bool {
+                    return schema.Properties[i].UIOrder < schema.Properties[j].UIOrder
+                })
 
+				
 				schemas.List = append(schemas.List, schema)
 				schemas.IsNotEmpty = true
 			}
