@@ -77,7 +77,9 @@ type OperationConfig struct {
 	AddAuth     bool
 	PathParams  map[string]string
 	QueryParams map[string]string
-	Responses   []ResponseConfig
+	Responses   []ResponseConfig 
+	IsFormHandler     bool   // NEU: ist das ein Form-GET Handler?
+    FormComponentName string // NEU: Name der Form-Komponente
 }
 
 type PathConfig struct {
@@ -114,6 +116,11 @@ type PropertyConf struct {
 	Name      string
 	LabelName string
 	Type      string
+	// NEU - generische UI Attribute:
+	UIControl  string // "input", "select", "textarea", "checkbox", "file"
+	UIOrder    int    // Reihenfolge im Formular
+	UIRequired bool   // Pflichtfeld ja/nein
+	UIGroup    string // Gruppierung von Feldern
 }
 
 // struct for each method a schema has

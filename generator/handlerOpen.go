@@ -8,13 +8,14 @@ import (
 	pathMod "path"
 	"path/filepath"
 	"slices"
+	"strings"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/huandu/xstrings"
 	"github.com/rs/zerolog/log"
 )
 
-func generateHandlerFuncStub(op *openapi3.Operation, method string, path string, genConf GeneratorConfig) (OperationConfig, error) {
+func generateHandlerFuncStub(op *openapi3.Operation, method string, path string, genConf GeneratorConfig, spec *openapi3.T) (OperationConfig, error) {
 	var conf OperationConfig
 
 	var methodPath = method + " " + path
@@ -114,7 +115,18 @@ func generateHandlerFuncStub(op *openapi3.Operation, method string, path string,
 			}
 		}
 	}
-
+	// NEU - prüfen ob dieser GET Handler ein Formular anzeigen soll
+	if method == "GET" && genConf.AddFrontend {
+		schemas := createSchemas(spec)
+		for _, schema := range schemas.List {
+			// Prüfen ob der Pfad zum Schema passt z.B. /antrag → Antrag
+			if strings.Contains(strings.ToLower(path), schema.Name) {
+				conf.IsFormHandler = true
+				conf.FormComponentName = schema.ComponentName
+				break
+			}
+		}
+	}
 	canBeEdited := true
 	fileName := xstrings.FirstRuneToLower(xstrings.ToCamelCase(conf.OperationID)) + ".go"
 	filePath := filepath.Join(Config.Path, RestPkg, fileName)
@@ -184,7 +196,7 @@ func generateHandlerFuncs(spec *openapi3.T, genConf GeneratorConfig) {
 
 		for method, op := range pathObj.Operations() {
 			if !slices.Contains(op.Tags, "builtin") {
-				opConfig, err := generateHandlerFuncStub(op, method, newPath.Path, genConf)
+				opConfig, err := generateHandlerFuncStub(op, method, newPath.Path, genConf, spec)
 
 				if err != nil {
 					log.Err(err).Msg("Skipping generation of handler function for endpoint " + method + " " + path)

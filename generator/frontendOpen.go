@@ -124,6 +124,24 @@ func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 	}
 
 	log.Info().Msg("Created Frontend successfully.")
+	// NEU - Formulare generieren wenn Schemas mit x-label: "form" vorhanden
+	schemas := createSchemas(spec)
+	if schemas.IsNotEmpty {
+		type FormConfig struct {
+			GeneratorConfig
+			Schemas Schemas
+		}
+		formConf := FormConfig{
+			GeneratorConfig: conf,
+			Schemas:         schemas,
+		}
+		createFileFromTemplate(
+			filepath.Join(pagesPath, "form.templ"),
+			"templates/common/web/pages/form.templ.tmpl",
+			formConf,
+		)
+		log.Info().Msg("Generated form templates from schema.")
+	}
 }
 
 // function to get the port specified in the OpenAPI Spec
@@ -185,6 +203,31 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
 					if len(types) > 0 {
 						tmpPropertyConf.Type = types[0]
 					}
+
+					// NEU - x-ui Attribute aus der YAML lesen
+					propValue := spec.Components.Schemas[tmpSchemaName].Value.Properties[tmpSchemaPropertyName].Value
+					propJSON, _ := propValue.MarshalJSON()
+					propStr := string(propJSON)
+
+					// x-ui-control lesen (default: "input")
+					if strings.Contains(propStr, "\"x-ui-control\":") {
+						start := strings.Index(propStr, "\"x-ui-control\":\"") + len("\"x-ui-control\":\"")
+						end := strings.Index(propStr[start:], "\"") + start
+						tmpPropertyConf.UIControl = propStr[start:end]
+					} else {
+						tmpPropertyConf.UIControl = "input"
+					}
+
+					// x-ui-required lesen
+					tmpPropertyConf.UIRequired = strings.Contains(propStr, "\"x-ui-required\":true")
+
+					// x-ui-group lesen
+					if strings.Contains(propStr, "\"x-ui-group\":") {
+						start := strings.Index(propStr, "\"x-ui-group\":\"") + len("\"x-ui-group\":\"")
+						end := strings.Index(propStr[start:], "\"") + start
+						tmpPropertyConf.UIGroup = propStr[start:end]
+					}
+
 					schema.Properties = append(schema.Properties, tmpPropertyConf)
 				}
 

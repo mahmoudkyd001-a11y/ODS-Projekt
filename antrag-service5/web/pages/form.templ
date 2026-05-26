@@ -1,0 +1,90 @@
+
+package pages
+
+
+
+
+templ AntragForm() {
+    <div class="container mt-4">
+       <h1>Antrag</h1>
+        <form hx-post="/antrag" hx-target="#result" hx-swap="innerHTML">
+            
+            <div class="mb-3 group-personal">
+                <label for="vorname" class="form-label">
+                    Vorname
+                    <span class="text-danger">*</span>
+                </label>
+                
+                <input 
+                    type="text"
+                    id="vorname"
+                    name="vorname"
+                    class="form-control"
+                    required/>
+                
+            </div>
+            
+            <div class="mb-3">
+                <label for="begruendung" class="form-label">
+                    Begruendung
+                    
+                </label>
+                
+                <textarea 
+                    id="begruendung" 
+                    name="begruendung" 
+                    class="form-control"
+                    ></textarea>
+                
+            </div>
+            
+            <div class="mb-3">
+                <label for="dokument" class="form-label">
+                    Dokument
+                    
+                </label>
+                
+                <input 
+                    type="file"
+                    id="dokument"
+                    name="dokument"
+                    class="form-control"
+                    />
+                
+            </div>
+            
+            <div class="mb-3">
+                <label for="email" class="form-label">
+                    Email
+                    <span class="text-danger">*</span>
+                </label>
+                
+                <input 
+                    type="text"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    required/>
+                
+            </div>
+            
+            <div class="mb-3 group-personal">
+                <label for="nachname" class="form-label">
+                    Nachname
+                    <span class="text-danger">*</span>
+                </label>
+                
+                <input 
+                    type="text"
+                    id="nachname"
+                    name="nachname"
+                    class="form-control"
+                    required/>
+                
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Absenden</button>
+        </form>
+        <div id="result"></div>
+    </div>
+}

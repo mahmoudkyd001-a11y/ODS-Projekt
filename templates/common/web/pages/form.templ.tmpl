@@ -1,0 +1,60 @@
+
+package pages
+
+
+
+{{range .Schemas.List}}
+templ {{.ComponentName}}Form() {
+    <div class="container mt-4">
+       <h1>{{.H1Name}}</h1>
+        <form hx-post="/{{.Name}}" hx-target="#result" hx-swap="innerHTML">
+            {{range .Properties}}
+            <div class="mb-3{{if .UIGroup}} group-{{.UIGroup}}{{end}}">
+                <label for="{{.Name}}" class="form-label">
+                    {{.LabelName}}
+                    {{if .UIRequired}}<span class="text-danger">*</span>{{end}}
+                </label>
+                {{if eq .UIControl "textarea"}}
+                <textarea 
+                    id="{{.Name}}" 
+                    name="{{.Name}}" 
+                    class="form-control"
+                    {{if .UIRequired}}required{{end}}></textarea>
+                {{else if eq .UIControl "checkbox"}}
+                <input 
+                    type="checkbox"
+                    id="{{.Name}}"
+                    name="{{.Name}}"
+                    class="form-check-input"
+                    {{if .UIRequired}}required{{end}}/>
+                {{else if eq .UIControl "file"}}
+                <input 
+                    type="file"
+                    id="{{.Name}}"
+                    name="{{.Name}}"
+                    class="form-control"
+                    {{if .UIRequired}}required{{end}}/>
+                {{else if eq .UIControl "select"}}
+                <select 
+                    id="{{.Name}}"
+                    name="{{.Name}}"
+                    class="form-select"
+                    {{if .UIRequired}}required{{end}}>
+                    <option value="">Bitte wählen...</option>
+                </select>
+                {{else}}
+                <input 
+                    type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}"
+                    id="{{.Name}}"
+                    name="{{.Name}}"
+                    class="form-control"
+                    {{if .UIRequired}}required{{end}}/>
+                {{end}}
+            </div>
+            {{end}}
+            <button type="submit" class="btn btn-primary">Absenden</button>
+        </form>
+        <div id="result"></div>
+    </div>
+}
+{{end}}

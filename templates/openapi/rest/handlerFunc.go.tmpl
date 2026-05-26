@@ -138,8 +138,12 @@ func {{ .OperationID }}(c *echo.Context) error {
      */
 
 
-    {{ range .Responses }}
+      {{ range .Responses }}
     // {{ .StatusCode }} => {{ .Description }}
     {{- end }}
+    {{- if and (eq .Method "GET") .IsFormHandler }}
+    return pages.{{ .FormComponentName }}Form().Render((*c).Request().Context(), (*c).Response())
+    {{- else }}
 	return (*c).String(http.StatusNotImplemented, "Temporary handler stub.")
+    {{- end }}
 }
