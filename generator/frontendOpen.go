@@ -240,6 +240,20 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
                                     tmpPropertyConf.UIOrder = order
                             }
                     }
+					// x-ui-options lesen (für Dropdown-Optionen)
+                    if strings.Contains(propStr, "\"x-ui-options\":") {
+                        start := strings.Index(propStr, "\"x-ui-options\":[") + len("\"x-ui-options\":[")
+                        end := strings.Index(propStr[start:], "]") + start
+                        optionsStr := propStr[start:end]
+                        options := strings.Split(optionsStr, ",")
+                        for _, opt := range options {
+                            opt = strings.TrimSpace(opt)
+                            opt = strings.Trim(opt, "\"")
+                            if opt != "" {
+                                tmpPropertyConf.UIOptions = append(tmpPropertyConf.UIOptions, opt)
+                            }
+                        }
+                    }
 
 					schema.Properties = append(schema.Properties, tmpPropertyConf)
 				}

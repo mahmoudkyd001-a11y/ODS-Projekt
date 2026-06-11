@@ -37,7 +37,20 @@ templ {{.ComponentName}}Form() {
                                     {{else if eq .UIControl "select"}}
                                     <select id="{{.Name}}" name="{{.Name}}" class="form-select" {{if .UIRequired}}required{{end}}>
                                         <option value="">Bitte wählen...</option>
+                                        {{range .UIOptions}}
+                                        <option value="{{.}}">{{.}}</option>
+                                        {{end}}
                                     </select>
+                                    {{else if eq .UIControl "email"}}
+                                    <input type="email" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "password"}}
+                                    <input type="password" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "date"}}
+                                    <input type="date" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "number"}}
+                                    <input type="number" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "tel"}}
+                                    <input type="tel" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
                                     {{else}}
                                     <input type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
                                     {{end}}

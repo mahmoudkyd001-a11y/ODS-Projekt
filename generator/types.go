@@ -121,6 +121,7 @@ type PropertyConf struct {
 	UIOrder    int    // Reihenfolge im Formular
 	UIRequired bool   // Pflichtfeld ja/nein
 	UIGroup    string // Gruppierung von Feldern
+	 UIOptions  []string  // NEU: Optionen für select
 }
 
 // struct for each method a schema has

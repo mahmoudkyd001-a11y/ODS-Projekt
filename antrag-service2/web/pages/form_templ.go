@@ -9,7 +9,7 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "antragservice3/core"
+import "antragservice2/core"
 
 func AntragForm() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -39,13 +39,13 @@ func AntragForm() templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(core.Translate("antrag.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `antrag-service3/web/pages/form.templ`, Line: 9, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `antrag-service2/web/pages/form.templ`, Line: 9, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h1><form hx-post=\"/antrag\" hx-target=\"#result\" hx-swap=\"innerHTML\"><div class=\"mb-3 group-personal\"><label for=\"vorname\" class=\"form-label\">Vorname <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"vorname\" name=\"vorname\" class=\"form-control\" required></div><div class=\"mb-3\"><label for=\"begruendung\" class=\"form-label\">Begruendung</label> <textarea id=\"begruendung\" name=\"begruendung\" class=\"form-control\"></textarea></div><div class=\"mb-3\"><label for=\"dokument\" class=\"form-label\">Dokument</label> <input type=\"file\" id=\"dokument\" name=\"dokument\" class=\"form-control\"></div><div class=\"mb-3\"><label for=\"email\" class=\"form-label\">Email <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"email\" name=\"email\" class=\"form-control\" required></div><div class=\"mb-3 group-personal\"><label for=\"nachname\" class=\"form-label\">Nachname <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"nachname\" name=\"nachname\" class=\"form-control\" required></div><button type=\"submit\" class=\"btn btn-primary\">Absenden</button></form><div id=\"result\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h1><form hx-post=\"/antrag\" hx-target=\"#result\" hx-swap=\"innerHTML\"><div class=\"mb-3\"><label for=\"email\" class=\"form-label\">Email <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"email\" name=\"email\" class=\"form-control\" required></div><div class=\"mb-3 group-personal\"><label for=\"nachname\" class=\"form-label\">Nachname <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"nachname\" name=\"nachname\" class=\"form-control\" required></div><div class=\"mb-3 group-personal\"><label for=\"vorname\" class=\"form-label\">Vorname <span class=\"text-danger\">*</span></label> <input type=\"text\" id=\"vorname\" name=\"vorname\" class=\"form-control\" required></div><div class=\"mb-3\"><label for=\"begruendung\" class=\"form-label\">Begruendung</label> <textarea id=\"begruendung\" name=\"begruendung\" class=\"form-control\"></textarea></div><div class=\"mb-3\"><label for=\"dokument\" class=\"form-label\">Dokument</label> <input type=\"file\" id=\"dokument\" name=\"dokument\" class=\"form-control\"></div><button type=\"submit\" class=\"btn btn-primary\">Absenden</button></form><div id=\"result\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
