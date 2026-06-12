@@ -128,21 +128,26 @@ func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 	// NEU - Formulare generieren wenn Schemas mit x-label: "form" vorhanden
 	schemas := createSchemas(spec)
 	if schemas.IsNotEmpty {
-		type FormConfig struct {
-			GeneratorConfig
-			Schemas Schemas
+			type FormConfig struct {
+				GeneratorConfig
+				Schemas Schemas
+			}
+			formConf := FormConfig{
+				GeneratorConfig: conf,
+				Schemas:         schemas,
+			}
+			createFileFromTemplate(
+				filepath.Join(pagesPath, "layout.templ"),
+				"templates/common/web/pages/layout.templ.tmpl",
+				formConf,
+			)
+			createFileFromTemplate(
+				filepath.Join(pagesPath, "form.templ"),
+				"templates/common/web/pages/form.templ.tmpl",
+				formConf,
+			)
+			log.Info().Msg("Generated form templates from schema.")
 		}
-		formConf := FormConfig{
-			GeneratorConfig: conf,
-			Schemas:         schemas,
-		}
-		createFileFromTemplate(
-			filepath.Join(pagesPath, "form.templ"),
-			"templates/common/web/pages/form.templ.tmpl",
-			formConf,
-		)
-		log.Info().Msg("Generated form templates from schema.")
-	}
 }
 
 // function to get the port specified in the OpenAPI Spec
@@ -241,6 +246,7 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
                             }
                     }
 					// x-ui-options lesen (für Dropdown-Optionen)
+
                     if strings.Contains(propStr, "\"x-ui-options\":") {
                         start := strings.Index(propStr, "\"x-ui-options\":[") + len("\"x-ui-options\":[")
                         end := strings.Index(propStr[start:], "]") + start
@@ -255,6 +261,22 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
                         }
                     }
 
+					// x-ui-placeholder lesen
+					if strings.Contains(propStr, "\"x-ui-placeholder\":") {
+						start := strings.Index(propStr, "\"x-ui-placeholder\":\"") + len("\"x-ui-placeholder\":\"")
+						end := strings.Index(propStr[start:], "\"") + start
+						tmpPropertyConf.UIPlaceholder = propStr[start:end]
+					}
+
+					// x-ui-label lesen (fallback: automatisch aus Feldname)
+					if strings.Contains(propStr, "\"x-ui-label\":") {
+						start := strings.Index(propStr, "\"x-ui-label\":\"") + len("\"x-ui-label\":\"")
+						end := strings.Index(propStr[start:], "\"") + start
+						tmpPropertyConf.UILabel = propStr[start:end]
+					} else {
+						tmpPropertyConf.UILabel = tmpPropertyConf.LabelName
+					}
+
 					schema.Properties = append(schema.Properties, tmpPropertyConf)
 				}
 				
@@ -262,7 +284,37 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
                     return schema.Properties[i].UIOrder < schema.Properties[j].UIOrder
                 })
 
-				
+				// NEU - Felder nach Gruppen gruppieren
+				groupMap := make(map[string]*GroupConf)
+				groupOrder := []string{}
+				ungrouped := GroupConf{Name: "", Properties: []PropertyConf{}}
+
+				for _, prop := range schema.Properties {
+					if prop.UIGroup == "" {
+						ungrouped.Properties = append(ungrouped.Properties, prop)
+					} else {
+						if _, exists := groupMap[prop.UIGroup]; !exists {
+							groupMap[prop.UIGroup] = &GroupConf{
+								Name:       prop.UIGroup,
+								Properties: []PropertyConf{},
+							}
+							groupOrder = append(groupOrder, prop.UIGroup)
+						}
+						groupMap[prop.UIGroup].Properties = append(groupMap[prop.UIGroup].Properties, prop)
+					}
+				}
+
+				// Gruppen in richtiger Reihenfolge hinzufügen
+				for _, groupName := range groupOrder {
+					schema.Groups = append(schema.Groups, *groupMap[groupName])
+				}
+
+				// Felder ohne Gruppe am Ende hinzufügen
+				if len(ungrouped.Properties) > 0 {
+					schema.Groups = append(schema.Groups, ungrouped)
+				}
+
+				schema.HasGroups = len(schema.Groups) > 0
 				schemas.List = append(schemas.List, schema)
 				schemas.IsNotEmpty = true
 			}

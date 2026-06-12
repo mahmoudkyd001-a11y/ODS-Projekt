@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   title: Baumfaellantrag
-  version: "1.0.0"
+  version: "2.0.0"
 
 paths:
   /index.html:
@@ -86,10 +86,12 @@ components:
           x-ui-label: "Vorname des Antragstellers"
         nachname:
           type: string
-          x-ui-control: "input"
-          x-ui-required: true
-          x-ui-group: "personal"
+          x-ui-control: input
           x-ui-order: 2
+          x-ui-group: personal
+          x-ui-required: true
+          x-ui-placeholder: "z.B. Mustermann"
+          x-ui-label: "Nachname des Antragstellers"
         email:
           type: string
           x-ui-control: email
@@ -100,21 +102,27 @@ components:
           x-ui-label: "E-Mail Adresse"
         telefon:
           type: string
-          x-ui-control: "tel"
-          x-ui-group: "personal"
+          x-ui-control: tel
           x-ui-order: 4
+          x-ui-group: personal
+          x-ui-placeholder: "z.B. +49 30 12345678"
+          x-ui-label: "Telefonnummer"
         adresse:
           type: string
-          x-ui-control: "input"
-          x-ui-required: true
-          x-ui-group: "personal"
+          x-ui-control: input
           x-ui-order: 5
+          x-ui-group: personal
+          x-ui-required: true
+          x-ui-placeholder: "Straße, Hausnummer, PLZ, Ort"
+          x-ui-label: "Wohnanschrift"
         baumart:
           type: string
-          x-ui-control: "input"
-          x-ui-required: true
-          x-ui-group: "baum"
+          x-ui-control: input
           x-ui-order: 6
+          x-ui-group: baum
+          x-ui-required: true
+          x-ui-placeholder: "z.B. Eiche, Buche, Birke"
+          x-ui-label: "Baumart"
         baumhoehe:
           type: number
           x-ui-control: number
@@ -125,15 +133,18 @@ components:
           x-ui-label: "Baumhöhe in Metern"
         baumumfang:
           type: integer
-          x-ui-control: "number"
-          x-ui-group: "baum"
+          x-ui-control: number
           x-ui-order: 8
+          x-ui-group: baum
+          x-ui-placeholder: "z.B. 80"
+          x-ui-label: "Baumumfang in cm"
         antragsdatum:
           type: string
-          x-ui-control: "date"
-          x-ui-required: true
-          x-ui-group: "baum"
+          x-ui-control: date
           x-ui-order: 9
+          x-ui-group: baum
+          x-ui-required: true
+          x-ui-label: "Gewünschtes Fälldatum"
         standort:
           type: string
           x-ui-control: textarea
@@ -144,30 +155,39 @@ components:
           x-ui-label: "Genaue Lage des Baumes"
         eigentuemer:
           type: string
-          x-ui-control: "input"
-          x-ui-required: true
-          x-ui-group: "baum"
+          x-ui-control: input
           x-ui-order: 11
+          x-ui-group: baum
+          x-ui-required: true
+          x-ui-placeholder: "Name des Grundstückseigentümers"
+          x-ui-label: "Eigentümer des Grundstücks"
         denkmalschutz:
           type: boolean
-          x-ui-control: "checkbox"
-          x-ui-group: "baum"
+          x-ui-control: checkbox
           x-ui-order: 12
+          x-ui-group: baum
+          x-ui-label: "Steht der Baum unter Denkmalschutz?"
         begruendung:
           type: string
-          x-ui-control: "textarea"
-          x-ui-required: true
+          x-ui-control: textarea
           x-ui-order: 13
+          x-ui-required: true
+          x-ui-placeholder: "Bitte begründen Sie Ihren Antrag ausführlich..."
+          x-ui-label: "Begründung der Fällung"
         massnahme:
           type: string
-          x-ui-control: "select"
-          x-ui-required: true
+          x-ui-control: select
           x-ui-order: 14
+          x-ui-required: true
+          x-ui-label: "Art der Maßnahme"
+          x-ui-options: ["Fällung","Rückschnitt","Kronenpflege","Notfällung"]
         dokument:
           type: string
-          x-ui-control: "file"
+          x-ui-control: file
           x-ui-order: 15
+          x-ui-label: "Lageplan / Dokument (PDF)"
         fotos:
           type: string
-          x-ui-control: "file"
+          x-ui-control: file
           x-ui-order: 16
+          x-ui-label: "Fotos des Baumes"

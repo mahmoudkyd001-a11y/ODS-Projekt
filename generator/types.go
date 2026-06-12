@@ -108,7 +108,14 @@ type SchemaConf struct {
 	H1Name        string // correct grammar, spaces allowed
 	ComponentName string // first letter upper case, no spaces
 	Properties    []PropertyConf
+	Groups        []GroupConf  // NEU: Felder nach Gruppen gruppiert
+    HasGroups     bool         // NEU: gibt es Gruppen?
 	Methods       []MethodConf
+}
+// struct für eine Gruppe von Properties
+type GroupConf struct {
+    Name       string
+    Properties []PropertyConf
 }
 
 // struct for each property of a schema
@@ -121,7 +128,9 @@ type PropertyConf struct {
 	UIOrder    int    // Reihenfolge im Formular
 	UIRequired bool   // Pflichtfeld ja/nein
 	UIGroup    string // Gruppierung von Feldern
-	 UIOptions  []string  // NEU: Optionen für select
+	UIOptions  []string  // NEU: Optionen für select
+	UIPlaceholder string  // NEU
+    UILabel       string  // NEU
 }
 
 // struct for each method a schema has

@@ -6,22 +6,22 @@ import (
 )
 
 type Baumfaellung struct {
-	Telefon       string `json:"telefon" yaml:"telefon" xml:"telefon" form:"telefon"`
-	Baumhoehe     int    `json:"baumhoehe" yaml:"baumhoehe" xml:"baumhoehe" form:"baumhoehe"`
-	Begruendung   string `json:"begruendung" yaml:"begruendung" xml:"begruendung" form:"begruendung"`
-	Massnahme     string `json:"massnahme" yaml:"massnahme" xml:"massnahme" form:"massnahme"`
-	Nachname      string `json:"nachname" yaml:"nachname" xml:"nachname" form:"nachname"`
-	Denkmalschutz bool   `json:"denkmalschutz" yaml:"denkmalschutz" xml:"denkmalschutz" form:"denkmalschutz"`
-	Email         string `json:"email" yaml:"email" xml:"email" form:"email"`
-	Standort      string `json:"standort" yaml:"standort" xml:"standort" form:"standort"`
-	Adresse       string `json:"adresse" yaml:"adresse" xml:"adresse" form:"adresse"`
-	Baumart       string `json:"baumart" yaml:"baumart" xml:"baumart" form:"baumart"`
-	Vorname       string `json:"vorname" yaml:"vorname" xml:"vorname" form:"vorname"`
-	Antragsdatum  string `json:"antragsdatum" yaml:"antragsdatum" xml:"antragsdatum" form:"antragsdatum"`
-	Baumumfang    int    `json:"baumumfang" yaml:"baumumfang" xml:"baumumfang" form:"baumumfang"`
-	Eigentuemer   string `json:"eigentuemer" yaml:"eigentuemer" xml:"eigentuemer" form:"eigentuemer"`
-	Dokument      string `json:"dokument" yaml:"dokument" xml:"dokument" form:"dokument"`
-	Fotos         string `json:"fotos" yaml:"fotos" xml:"fotos" form:"fotos"`
+	Telefon       string  `json:"telefon" yaml:"telefon" xml:"telefon" form:"telefon"`
+	Standort      string  `json:"standort" yaml:"standort" xml:"standort" form:"standort"`
+	Dokument      string  `json:"dokument" yaml:"dokument" xml:"dokument" form:"dokument"`
+	Massnahme     string  `json:"massnahme" yaml:"massnahme" xml:"massnahme" form:"massnahme"`
+	Nachname      string  `json:"nachname" yaml:"nachname" xml:"nachname" form:"nachname"`
+	Antragsdatum  string  `json:"antragsdatum" yaml:"antragsdatum" xml:"antragsdatum" form:"antragsdatum"`
+	Eigentuemer   string  `json:"eigentuemer" yaml:"eigentuemer" xml:"eigentuemer" form:"eigentuemer"`
+	Baumart       string  `json:"baumart" yaml:"baumart" xml:"baumart" form:"baumart"`
+	Baumumfang    int     `json:"baumumfang" yaml:"baumumfang" xml:"baumumfang" form:"baumumfang"`
+	Fotos         string  `json:"fotos" yaml:"fotos" xml:"fotos" form:"fotos"`
+	Email         string  `json:"email" yaml:"email" xml:"email" form:"email"`
+	Vorname       string  `json:"vorname" yaml:"vorname" xml:"vorname" form:"vorname"`
+	Adresse       string  `json:"adresse" yaml:"adresse" xml:"adresse" form:"adresse"`
+	Baumhoehe     float64 `json:"baumhoehe" yaml:"baumhoehe" xml:"baumhoehe" form:"baumhoehe"`
+	Denkmalschutz bool    `json:"denkmalschutz" yaml:"denkmalschutz" xml:"denkmalschutz" form:"denkmalschutz"`
+	Begruendung   string  `json:"begruendung" yaml:"begruendung" xml:"begruendung" form:"begruendung"`
 }
 
 func (v *Baumfaellung) Validate() error {
@@ -36,14 +36,24 @@ func (v *Baumfaellung) Validate() error {
 		return fmt.Errorf("string '%s' is too long", "telefon")
 	}
 
-	if v.Begruendung == "" {
-		return fmt.Errorf("Missing fieldBegruendung")
+	if v.Standort == "" {
+		return fmt.Errorf("Missing fieldStandort")
 	}
 
 	// ToDo: Improve validation of MaxLength
 
-	if len(v.Begruendung) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "begruendung")
+	if len(v.Standort) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "standort")
+	}
+
+	if v.Dokument == "" {
+		return fmt.Errorf("Missing fieldDokument")
+	}
+
+	// ToDo: Improve validation of MaxLength
+
+	if len(v.Dokument) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "dokument")
 	}
 
 	if v.Massnahme == "" {
@@ -66,56 +76,6 @@ func (v *Baumfaellung) Validate() error {
 		return fmt.Errorf("string '%s' is too long", "nachname")
 	}
 
-	if v.Email == "" {
-		return fmt.Errorf("Missing fieldEmail")
-	}
-
-	// ToDo: Improve validation of MaxLength
-
-	if len(v.Email) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "email")
-	}
-
-	if v.Standort == "" {
-		return fmt.Errorf("Missing fieldStandort")
-	}
-
-	// ToDo: Improve validation of MaxLength
-
-	if len(v.Standort) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "standort")
-	}
-
-	if v.Adresse == "" {
-		return fmt.Errorf("Missing fieldAdresse")
-	}
-
-	// ToDo: Improve validation of MaxLength
-
-	if len(v.Adresse) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "adresse")
-	}
-
-	if v.Baumart == "" {
-		return fmt.Errorf("Missing fieldBaumart")
-	}
-
-	// ToDo: Improve validation of MaxLength
-
-	if len(v.Baumart) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "baumart")
-	}
-
-	if v.Vorname == "" {
-		return fmt.Errorf("Missing fieldVorname")
-	}
-
-	// ToDo: Improve validation of MaxLength
-
-	if len(v.Vorname) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "vorname")
-	}
-
 	if v.Antragsdatum == "" {
 		return fmt.Errorf("Missing fieldAntragsdatum")
 	}
@@ -136,14 +96,14 @@ func (v *Baumfaellung) Validate() error {
 		return fmt.Errorf("string '%s' is too long", "eigentuemer")
 	}
 
-	if v.Dokument == "" {
-		return fmt.Errorf("Missing fieldDokument")
+	if v.Baumart == "" {
+		return fmt.Errorf("Missing fieldBaumart")
 	}
 
 	// ToDo: Improve validation of MaxLength
 
-	if len(v.Dokument) > 9223372036854775807 {
-		return fmt.Errorf("string '%s' is too long", "dokument")
+	if len(v.Baumart) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "baumart")
 	}
 
 	if v.Fotos == "" {
@@ -154,6 +114,46 @@ func (v *Baumfaellung) Validate() error {
 
 	if len(v.Fotos) > 9223372036854775807 {
 		return fmt.Errorf("string '%s' is too long", "fotos")
+	}
+
+	if v.Email == "" {
+		return fmt.Errorf("Missing fieldEmail")
+	}
+
+	// ToDo: Improve validation of MaxLength
+
+	if len(v.Email) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "email")
+	}
+
+	if v.Vorname == "" {
+		return fmt.Errorf("Missing fieldVorname")
+	}
+
+	// ToDo: Improve validation of MaxLength
+
+	if len(v.Vorname) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "vorname")
+	}
+
+	if v.Adresse == "" {
+		return fmt.Errorf("Missing fieldAdresse")
+	}
+
+	// ToDo: Improve validation of MaxLength
+
+	if len(v.Adresse) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "adresse")
+	}
+
+	if v.Begruendung == "" {
+		return fmt.Errorf("Missing fieldBegruendung")
+	}
+
+	// ToDo: Improve validation of MaxLength
+
+	if len(v.Begruendung) > 9223372036854775807 {
+		return fmt.Errorf("string '%s' is too long", "begruendung")
 	}
 
 	return nil

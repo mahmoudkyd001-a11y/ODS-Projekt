@@ -93,7 +93,7 @@ func main() {
 		e.FileFS("/doc", "web/doc/rapidoc.html", embeddedFS)
 	}
 
-	e.FileFS("/./examples/baum/baum.yaml", "web/doc/./examples/baum/baum.yaml", embeddedFS)
+	e.FileFS("/./examples/baum_v2/baum_v2.yaml", "web/doc/./examples/baum_v2/baum_v2.yaml", embeddedFS)
 
 	// serve default stylesheets and javascript files
 	e.StaticFS("/css/", echo.MustSubFS(web.Css, "css"))
