@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "mcp-dredger": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/mcp-dredger/mcp-dredger",
+      "args": ["-f", "${workspaceFolder}/examples/baum/baum.yaml"]
+    }
+  }
+}
