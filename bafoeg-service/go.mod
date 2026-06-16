@@ -1,4 +1,4 @@
-module baumservice
+module bafoegservice
 
 go 1.26.3
 

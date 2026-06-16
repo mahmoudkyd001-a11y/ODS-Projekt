@@ -2,9 +2,9 @@
 package rest
 
 import (
-	// "baumservice/rest/middleware"
-	"baumservice/core"
-	"baumservice/core/log"
+	// "bafoegservice/rest/middleware"
+	"bafoegservice/core"
+	"bafoegservice/core/log"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
@@ -40,7 +40,7 @@ func NewHandler(e *echo.Echo) {
 	g := e.Group("")
 
 	// TODO: Make a validation with openAPI sense
-	// 	spec, err := middleware.ParseOpenAPISpecFile("public/baum_v2.yaml", e.AcquireContext())
+	// 	spec, err := middleware.ParseOpenAPISpecFile("public/bafoeg.yaml", e.AcquireContext())
 	// 	if err != nil {
 	// 		e.Logger.Fatal(err)
 	// 	}
@@ -59,15 +59,15 @@ func NewHandler(e *echo.Echo) {
 	// Operations for: "/"
 	g.GET("/", GetRoot)
 
-	// Operations for: "/baumfaellung"
-	g.POST("/baumfaellung", CreateBaumfaellung)
-	// Operations for: "/baumfaellung"
-	g.GET("/baumfaellung", GetBaumfaellungForm)
+	// Operations for: "/bafoeg"
+	g.GET("/bafoeg", GetBafoegForm)
+	// Operations for: "/bafoeg"
+	g.POST("/bafoeg", CreateBafoeg)
 
-	// Operations for: "/baumfaellung/:id"
-	g.DELETE("/baumfaellung/:id", DeleteBaumfaellungById)
-	// Operations for: "/baumfaellung/:id"
-	g.GET("/baumfaellung/:id", GetBaumfaellungById)
+	// Operations for: "/bafoeg/:id"
+	g.DELETE("/bafoeg/:id", DeleteBafoegById)
+	// Operations for: "/bafoeg/:id"
+	g.GET("/bafoeg/:id", GetBafoegById)
 
 	// Operations for: "/index.html"
 	g.GET("/index.html", GetIndex)
