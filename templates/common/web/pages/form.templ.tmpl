@@ -11,101 +11,175 @@ templ {{.ComponentName}}Form() {
                     </div>
                     <div class="card-body">
                         <form hx-post="/{{.Name}}" hx-target="#result" hx-swap="innerHTML">
-                            {{if .HasGroups}}
-                            {{range .Groups}}
-                            {{if .Name}}
-                            <div class="card mb-4 border-primary">
-                                <div class="card-header bg-light fw-bold text-primary">
-                                    {{.Name}}
-                                </div>
-                                <div class="card-body">
-                                    {{range .Properties}}
-                                    <div class="mb-3">
-                                        <label for="{{.Name}}" class="form-label fw-bold">
-                                            {{.UILabel}}
-                                            {{if .UIRequired}}<span class="text-danger">*</span>{{end}}
-                                        </label>
-                                        {{if eq .UIControl "textarea"}}
-                                        <textarea id="{{.Name}}" name="{{.Name}}" class="form-control" rows="4" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}></textarea>
-                                        {{else if eq .UIControl "checkbox"}}
-                                        <div class="form-check">
-                                            <input type="checkbox" id="{{.Name}}" name="{{.Name}}" class="form-check-input" {{if .UIRequired}}required{{end}}/>
-                                            <label class="form-check-label" for="{{.Name}}">{{.UILabel}}</label>
-                                        </div>
-                                        {{else if eq .UIControl "file"}}
-                                        <input type="file" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
-                                        {{else if eq .UIControl "select"}}
-                                        <select id="{{.Name}}" name="{{.Name}}" class="form-select" {{if .UIRequired}}required{{end}}>
-                                            <option value="">Bitte wählen...</option>
-                                            {{range .UIOptions}}
-                                            <option value="{{.}}">{{.}}</option>
-                                            {{end}}
-                                        </select>
-                                        {{else if eq .UIControl "email"}}
-                                        <input type="email" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                        {{else if eq .UIControl "password"}}
-                                        <input type="password" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                        {{else if eq .UIControl "date"}}
-                                        <input type="date" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
-                                        {{else if eq .UIControl "number"}}
-                                        <input type="number" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                        {{else if eq .UIControl "tel"}}
-                                        <input type="tel" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                        {{else}}
-                                        <input type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                        {{end}}
-                                    </div>
+                            <div class="mb-4">
+                                <div class="d-flex flex-wrap gap-2 mb-2" id="step-pills">
+                                    {{range $i, $g := .Groups}}
+                                    <span class="badge rounded-pill bg-secondary" data-pill="{{$i}}">
+                                        {{if $g.Name}}{{$g.Name}}{{else}}Weitere Angaben{{end}}
+                                    </span>
                                     {{end}}
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" id="step-progress" style="width: 0%;"></div>
                                 </div>
                             </div>
-                            {{else}}
-                            {{range .Properties}}
-                            <div class="mb-3">
-                                <label for="{{.Name}}" class="form-label fw-bold">
-                                    {{.UILabel}}
-                                    {{if .UIRequired}}<span class="text-danger">*</span>{{end}}
-                                </label>
-                                {{if eq .UIControl "textarea"}}
-                                <textarea id="{{.Name}}" name="{{.Name}}" class="form-control" rows="4" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}></textarea>
-                                {{else if eq .UIControl "checkbox"}}
-                                <div class="form-check">
-                                    <input type="checkbox" id="{{.Name}}" name="{{.Name}}" class="form-check-input" {{if .UIRequired}}required{{end}}/>
-                                    <label class="form-check-label" for="{{.Name}}">{{.UILabel}}</label>
+                            {{range $i, $g := .Groups}}
+                            <div class="form-step" data-step="{{$i}}">
+                                {{if $g.Name}}
+                                <div class="card mb-4 border-primary">
+                                    <div class="card-header bg-light fw-bold text-primary">
+                                        {{$g.Name}}
+                                    </div>
+                                    <div class="card-body">
+                                        {{range $g.Properties}}
+                                        <div class="mb-3">
+                                            <label for="{{.Name}}" class="form-label fw-bold">
+                                                {{.UILabel}}
+                                                {{if .UIRequired}}<span class="text-danger">*</span>{{end}}
+                                            </label>
+                                            {{if eq .UIControl "textarea"}}
+                                            <textarea id="{{.Name}}" name="{{.Name}}" class="form-control" rows="4" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}></textarea>
+                                            {{else if eq .UIControl "checkbox"}}
+                                            <div class="form-check">
+                                                <input type="checkbox" id="{{.Name}}" name="{{.Name}}" class="form-check-input" {{if .UIRequired}}required{{end}}/>
+                                                <label class="form-check-label" for="{{.Name}}">{{.UILabel}}</label>
+                                            </div>
+                                            {{else if eq .UIControl "file"}}
+                                            <input type="file" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                            {{else if eq .UIControl "select"}}
+                                            <select id="{{.Name}}" name="{{.Name}}" class="form-select" {{if .UIRequired}}required{{end}}>
+                                                <option value="">Bitte wählen...</option>
+                                                {{range .UIOptions}}
+                                                <option value="{{.}}">{{.}}</option>
+                                                {{end}}
+                                            </select>
+                                            {{else if eq .UIControl "email"}}
+                                            <input type="email" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                            {{else if eq .UIControl "password"}}
+                                            <input type="password" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                            {{else if eq .UIControl "date"}}
+                                            <input type="date" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                            {{else if eq .UIControl "number"}}
+                                            <input type="number" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                            {{else if eq .UIControl "tel"}}
+                                            <input type="tel" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                            {{else}}
+                                            <input type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                            {{end}}
+                                        </div>
+                                        {{end}}
+                                    </div>
                                 </div>
-                                {{else if eq .UIControl "file"}}
-                                <input type="file" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
-                                {{else if eq .UIControl "select"}}
-                                <select id="{{.Name}}" name="{{.Name}}" class="form-select" {{if .UIRequired}}required{{end}}>
-                                    <option value="">Bitte wählen...</option>
-                                    {{range .UIOptions}}
-                                    <option value="{{.}}">{{.}}</option>
-                                    {{end}}
-                                </select>
-                                {{else if eq .UIControl "email"}}
-                                <input type="email" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                {{else if eq .UIControl "password"}}
-                                <input type="password" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                {{else if eq .UIControl "date"}}
-                                <input type="date" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
-                                {{else if eq .UIControl "number"}}
-                                <input type="number" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
-                                {{else if eq .UIControl "tel"}}
-                                <input type="tel" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
                                 {{else}}
-                                <input type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                {{range $g.Properties}}
+                                <div class="mb-3">
+                                    <label for="{{.Name}}" class="form-label fw-bold">
+                                        {{.UILabel}}
+                                        {{if .UIRequired}}<span class="text-danger">*</span>{{end}}
+                                    </label>
+                                    {{if eq .UIControl "textarea"}}
+                                    <textarea id="{{.Name}}" name="{{.Name}}" class="form-control" rows="4" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}></textarea>
+                                    {{else if eq .UIControl "checkbox"}}
+                                    <div class="form-check">
+                                        <input type="checkbox" id="{{.Name}}" name="{{.Name}}" class="form-check-input" {{if .UIRequired}}required{{end}}/>
+                                        <label class="form-check-label" for="{{.Name}}">{{.UILabel}}</label>
+                                    </div>
+                                    {{else if eq .UIControl "file"}}
+                                    <input type="file" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "select"}}
+                                    <select id="{{.Name}}" name="{{.Name}}" class="form-select" {{if .UIRequired}}required{{end}}>
+                                        <option value="">Bitte wählen...</option>
+                                        {{range .UIOptions}}
+                                        <option value="{{.}}">{{.}}</option>
+                                        {{end}}
+                                    </select>
+                                    {{else if eq .UIControl "email"}}
+                                    <input type="email" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "password"}}
+                                    <input type="password" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "date"}}
+                                    <input type="date" id="{{.Name}}" name="{{.Name}}" class="form-control" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "number"}}
+                                    <input type="number" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                    {{else if eq .UIControl "tel"}}
+                                    <input type="tel" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                    {{else}}
+                                    <input type="{{if eq .Type "integer"}}number{{else if eq .Type "boolean"}}checkbox{{else}}text{{end}}" id="{{.Name}}" name="{{.Name}}" class="form-control" placeholder="{{.UIPlaceholder}}" {{if .UIRequired}}required{{end}}/>
+                                    {{end}}
+                                </div>
+                                {{end}}
                                 {{end}}
                             </div>
                             {{end}}
-                            {{end}}
-                            {{end}}
-                            {{end}}
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary" id="step-back">
+                                    <i class="bi bi-arrow-left me-1"></i>Zurück
+                                </button>
+                                <button type="button" class="btn btn-primary" id="step-next">
+                                    Weiter<i class="bi bi-arrow-right ms-1"></i>
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-lg" id="step-submit" style="display:none;">
                                     <i class="bi bi-send me-2"></i>Absenden
                                 </button>
                             </div>
                         </form>
                         <div id="result" class="mt-3"></div>
+                       <script>
+                                                   (function () {
+                                                       var steps = document.querySelectorAll(".form-step");
+                                                       var pills = document.querySelectorAll("[data-pill]");
+                                                       var progress = document.getElementById("step-progress");
+                                                       var backBtn = document.getElementById("step-back");
+                                                       var nextBtn = document.getElementById("step-next");
+                                                       var submitBtn = document.getElementById("step-submit");
+                                                       var total = steps.length;
+                                                       var current = 0;
+
+                                                       function show(i) {
+                                                           current = i;
+                                                           for (var s = 0; s < steps.length; s++) {
+                                                               steps[s].style.display = (s === i) ? "" : "none";
+                                                           }
+                                                           for (var p = 0; p < pills.length; p++) {
+                                                               pills[p].className = "badge rounded-pill " + (p <= i ? "bg-primary" : "bg-secondary");
+                                                           }
+                                                           var pct = Math.round(((i + 1) / total) * 100);
+                                                           progress.style.width = pct + "%";
+                                                           backBtn.style.display = (i === 0) ? "none" : "";
+                                                           nextBtn.style.display = (i === total - 1) ? "none" : "";
+                                                           submitBtn.style.display = (i === total - 1) ? "" : "none";
+                                                       }
+
+                                                       function validateStep(i) {
+                                                           var fields = steps[i].querySelectorAll("input, select, textarea");
+                                                           var firstInvalid = null;
+                                                           for (var f = 0; f < fields.length; f++) {
+                                                               if (fields[f].checkValidity()) {
+                                                                   fields[f].classList.remove("is-invalid");
+                                                               } else {
+                                                                   fields[f].classList.add("is-invalid");
+                                                                   if (firstInvalid === null) firstInvalid = fields[f];
+                                                               }
+                                                           }
+                                                           if (firstInvalid !== null) {
+                                                               firstInvalid.reportValidity();
+                                                               return false;
+                                                           }
+                                                           return true;
+                                                       }
+
+                                                       if (total > 0) {
+                                                           nextBtn.addEventListener("click", function () {
+                                                               if (!validateStep(current)) return;
+                                                               if (current < total - 1) show(current + 1);
+                                                           });
+                                                           backBtn.addEventListener("click", function () {
+                                                               if (current > 0) show(current - 1);
+                                                           });
+                                                           show(0);
+                                                       }
+                                                   })();
+                       </script>
                     </div>
                 </div>
             </div>
