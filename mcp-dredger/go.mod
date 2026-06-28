@@ -5,6 +5,7 @@ go 1.26.4
 require (
 	github.com/getkin/kin-openapi v0.140.0
 	github.com/mark3labs/mcp-go v0.54.1
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

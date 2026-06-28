@@ -2,9 +2,13 @@
   "context_servers": {
     "mcp-dredger": {
       "command": {
-        "path": "./mcp-dredger/mcp-dredger",
-        "args": ["-f", "./examples/baum/baum.yaml"],
-      },
-    },
-  },
+        "path": "./mcp-dredger/mcp-dredger.exe",
+        "args": [
+          "-f", "./examples/baum/baum.yaml",
+          "-a", "./examples/weather-example/asyncapi.yaml",
+          "-examples", "./examples"
+        ]
+      }
+    }
+  }
 }

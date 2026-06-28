@@ -141,6 +141,16 @@ var generateCmd = &cobra.Command{
 			extCmd.RunCommand("go mod init "+xstrings.FirstRuneToLower(xstrings.ToCamelCase(projectName)), projectDestination)
 		}
 
+		workDir := filepath.Dir(projectDestination)
+		goWorkPath := filepath.Join(workDir, "go.work")
+		if _, err := os.Stat(goWorkPath); err == nil {
+			absProjectDest, _ := filepath.Abs(projectDestination)
+			absWorkDir, _ := filepath.Abs(workDir)
+			relPath, _ := filepath.Rel(absWorkDir, absProjectDest)
+			log.Info().Msg("RUN `go work use " + relPath + "`")
+			extCmd.RunCommandRaw("go work use "+relPath, absWorkDir)
+		}
+
 		log.Info().Msg("RUN `goimports`")
 		extCmd.RunCommand("goimports -w .", projectDestination)
 
