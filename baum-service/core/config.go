@@ -2,28 +2,29 @@
 package core
 
 import (
-	"baumservice/core/log"
 	"flag"
+    "baumservice/core/log"
+	"strings"
 	"os"
 
-	"github.com/gobeam/stringy"
-	uuid "github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
+	uuid "github.com/google/uuid"
+	"github.com/gobeam/stringy"
 )
 
 type Config struct {
-	Args                []string `ignored:"true"`
-	Debug               bool     `default:"false"`
-	Version             bool     `default:"false" ignored:"true"`
-	Service             string   `default:"baumservice" ignored:"true"`
-	Sid                 string   `ignored:"true"`
-	Name                string   `default:"baumservice"`
+    Args                []string          `ignored:"true"`
+	Debug               bool              `default:"false"`
+	Version             bool              `default:"false" ignored:"true"`
+	Service             string            `default:"baumservice" ignored:"true"`
+	Sid                 string            `ignored:"true"`
+	Name                string            `default:"baumservice"`
 	Title               string
-	PortNb              string   `default:"8080"` // Port is a reserved name in k8s
-	ApiKeys             []string `default:"" split_words:"true"`
-	SessionKey          string   `default:"" split_words:"true"`
-	Host                string   `ignored:"true"`
+	PortNb              string            `default:"8080"` // Port is a reserved name in k8s
+	ApiKeys             []string          `default:"" split_words:"true"`
+	SessionKey          string            `default:"" split_words:"true"`
+	Host                string            `ignored:"true"`
 	User                string
 	Home                string            `ignored:"true"`
 	Policy              string            `default:""`
@@ -55,7 +56,7 @@ type Config struct {
 }
 
 var (
-	AppConfig Config
+    AppConfig Config
 )
 
 func init() {
@@ -73,11 +74,11 @@ func init() {
 	flag.BoolVar(&AppConfig.Debug, "d", AppConfig.Debug, "enable debugging level for logging")
 	flag.BoolVar(&AppConfig.Version, "V", AppConfig.Version, "print version")
 
-	// extend custom flags
+    // extend custom flags
 	initFlags()
 
-	flag.Parse()
-	AppConfig.Args = flag.Args()
+    flag.Parse()
+    AppConfig.Args = flag.Args()
 
 	if AppConfig.Name == "" {
 		AppConfig.Name = Service
@@ -86,7 +87,7 @@ func init() {
 		AppConfig.Title = AppConfig.Name
 	}
 
-	log.Setup(AppConfig.Name, Service, AppConfig.LogFile, AppConfig.LogJson, AppConfig.LokiServer, AppConfig.LokiKey, AppConfig.LokiLabels, AppConfig.LokiBuffersize, AppConfig.LokiMaxDelay, AppConfig.Debug)
+    log.Setup(AppConfig.Name, Service, AppConfig.LogFile, AppConfig.LogJson, AppConfig.LokiServer, AppConfig.LokiKey, AppConfig.LokiLabels, AppConfig.LokiBuffersize, AppConfig.LokiMaxDelay, AppConfig.Debug)
 
 	log.Debug().Str("name", AppConfig.Name).Any("environment", os.Environ()).Msg("Got environment")
 
@@ -100,11 +101,11 @@ func init() {
 		log.Fatal().Err(err).Str("name", stringy.New(AppConfig.Name).SnakeCase("?", "").ToUpper()).Msg("Couldn't read environment settings")
 	}
 
-	flag.Parse()
+    flag.Parse()
 
-	log.Setup(AppConfig.Name, Service, AppConfig.LogFile, AppConfig.LogJson, AppConfig.LokiServer, AppConfig.LokiKey, AppConfig.LokiLabels, AppConfig.LokiBuffersize, AppConfig.LokiMaxDelay, AppConfig.Debug)
+    log.Setup(AppConfig.Name, Service, AppConfig.LogFile, AppConfig.LogJson, AppConfig.LokiServer, AppConfig.LokiKey, AppConfig.LokiLabels, AppConfig.LokiBuffersize, AppConfig.LokiMaxDelay, AppConfig.Debug)
 
-	//  print app version
+    //  print app version
 	if AppConfig.Version {
 		println("version", version)
 		os.Exit(0)

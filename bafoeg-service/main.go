@@ -10,10 +10,6 @@ import (
 	"bafoegservice/db"
 	"bafoegservice/rest"
 	"bafoegservice/rest/middleware"
-	"embed"
-	"net/http"
-	"os/signal"
-	"syscall"
 
 	"bafoegservice/web"
 	"context"
@@ -44,7 +40,7 @@ func main() {
 		<-sig
 		log.Info().Msg("main received shutdown signal")
 		cancel() // trigger shutdown of everything else
-		
+		core.SseServer.Close()
 		echoCancel() // trigger shutdown echo
 	}()
 

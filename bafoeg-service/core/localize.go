@@ -12,6 +12,7 @@ import (
 	"golang.org/x/text/language"
 
 	"bafoegservice/core/log"
+	core "bafoegservice/core"
 )
 
 //go:embed locales/locale.*.toml

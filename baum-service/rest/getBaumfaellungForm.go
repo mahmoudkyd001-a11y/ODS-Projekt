@@ -4,9 +4,20 @@ package rest
 import (
 	"baumservice/core/log"
 	"baumservice/core/tracing"
+	"baumservice/entities"
+	"baumservice/rest/middleware"
+	"baumservice/usecases"
 	"baumservice/web/pages"
 
+	"encoding/json"
+	"encoding/xml"
+	"io"
+	"net/http"
+	"strconv"
+
 	"github.com/labstack/echo/v5"
+	"go.opentelemetry.io/otel/trace"
+	"gopkg.in/yaml.v2"
 )
 
 // Baumfällantrag anzeigen

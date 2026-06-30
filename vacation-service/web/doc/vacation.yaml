@@ -1,0 +1,101 @@
+openapi: "3.0.0"
+info:
+  title: Urlaubsantrag
+  version: "1.0.0"
+
+paths:
+  /urlaub:
+    get:
+      operationId: getUrlaubForm
+      summary: Urlaubsantrag anzeigen
+      responses:
+        "200":
+          description: Formular anzeigen
+
+    post:
+      operationId: createUrlaub
+      summary: Urlaubsantrag einreichen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Urlaubsantrag"
+      responses:
+        "201":
+          description: Antrag erstellt
+
+components:
+  schemas:
+    Urlaubsantrag:
+      type: object
+      x-label: "form"
+
+      properties:
+
+        vorname:
+          type: string
+          x-ui-control: "input"
+          x-ui-required: true
+          x-ui-group: "personal"
+          x-ui-order: 1
+          x-ui-label: "Vorname"
+
+        nachname:
+          type: string
+          x-ui-control: "input"
+          x-ui-required: true
+          x-ui-group: "personal"
+          x-ui-order: 2
+          x-ui-label: "Nachname"
+
+        email:
+          type: string
+          x-ui-control: "email"
+          x-ui-required: true
+          x-ui-group: "personal"
+          x-ui-order: 3
+          x-ui-label: "E-Mail"
+
+        startdatum:
+          type: string
+          x-ui-control: "date"
+          x-ui-required: true
+          x-ui-group: "urlaub"
+          x-ui-order: 4
+          x-ui-label: "Urlaubsbeginn"
+
+        enddatum:
+          type: string
+          x-ui-control: "date"
+          x-ui-required: true
+          x-ui-group: "urlaub"
+          x-ui-order: 5
+          x-ui-label: "Urlaubsende"
+
+        urlaubsart:
+          type: string
+          x-ui-control: "select"
+          x-ui-required: true
+          x-ui-group: "urlaub"
+          x-ui-order: 6
+          x-ui-label: "Urlaubsart"
+          x-ui-options:
+            - Erholungsurlaub
+            - Sonderurlaub
+            - Bildungsurlaub
+
+        begruendung:
+          type: string
+          x-ui-control: "textarea"
+          x-ui-required: true
+          x-ui-group: "urlaub"
+          x-ui-order: 7
+          x-ui-label: "Begründung"
+
+        anhang:
+          type: string
+          x-ui-control: "file"
+          x-ui-group: "urlaub"
+          x-ui-order: 8
+          x-ui-label: "Anhang"

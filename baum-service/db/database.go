@@ -5,7 +5,6 @@ import (
 	"database/sql"
 
 	"baumservice/core/log"
-
 	_ "github.com/mattn/go-sqlite3"
 )
 

@@ -20,7 +20,7 @@ var (
 	Version string = strings.TrimSpace(version)
 	//go:embed version
 	version string
-	AppInfo Info
+    AppInfo Info
 )
 
 func init() {

@@ -32,11 +32,11 @@ templ BaumfaellungForm() {
                                     
                                     <div class="mb-3">
                                         <label for="nachname" class="form-label fw-bold">
-                                            Nachname des Antragstellers
+                                            Nachname
                                             <span class="text-danger">*</span>
                                         </label>
                                         
-                                        <input type="text" id="nachname" name="nachname" class="form-control" placeholder="z.B. Mustermann" required/>
+                                        <input type="text" id="nachname" name="nachname" class="form-control" placeholder="" required/>
                                         
                                     </div>
                                     
@@ -52,21 +52,21 @@ templ BaumfaellungForm() {
                                     
                                     <div class="mb-3">
                                         <label for="telefon" class="form-label fw-bold">
-                                            Telefonnummer
+                                            Telefon
                                             
                                         </label>
                                         
-                                        <input type="tel" id="telefon" name="telefon" class="form-control" placeholder="z.B. +49 30 12345678" />
+                                        <input type="tel" id="telefon" name="telefon" class="form-control" placeholder="" />
                                         
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label for="adresse" class="form-label fw-bold">
-                                            Wohnanschrift
+                                            Adresse
                                             <span class="text-danger">*</span>
                                         </label>
                                         
-                                        <input type="text" id="adresse" name="adresse" class="form-control" placeholder="Straße, Hausnummer, PLZ, Ort" required/>
+                                        <input type="text" id="adresse" name="adresse" class="form-control" placeholder="" required/>
                                         
                                     </div>
                                     
@@ -87,7 +87,7 @@ templ BaumfaellungForm() {
                                             <span class="text-danger">*</span>
                                         </label>
                                         
-                                        <input type="text" id="baumart" name="baumart" class="form-control" placeholder="z.B. Eiche, Buche, Birke" required/>
+                                        <input type="text" id="baumart" name="baumart" class="form-control" placeholder="" required/>
                                         
                                     </div>
                                     
@@ -103,17 +103,17 @@ templ BaumfaellungForm() {
                                     
                                     <div class="mb-3">
                                         <label for="baumumfang" class="form-label fw-bold">
-                                            Baumumfang in cm
+                                            Baumumfang
                                             
                                         </label>
                                         
-                                        <input type="number" id="baumumfang" name="baumumfang" class="form-control" placeholder="z.B. 80" />
+                                        <input type="number" id="baumumfang" name="baumumfang" class="form-control" placeholder="" />
                                         
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label for="antragsdatum" class="form-label fw-bold">
-                                            Gewünschtes Fälldatum
+                                            Antragsdatum
                                             <span class="text-danger">*</span>
                                         </label>
                                         
@@ -133,23 +133,23 @@ templ BaumfaellungForm() {
                                     
                                     <div class="mb-3">
                                         <label for="eigentuemer" class="form-label fw-bold">
-                                            Eigentümer des Grundstücks
+                                            Eigentuemer
                                             <span class="text-danger">*</span>
                                         </label>
                                         
-                                        <input type="text" id="eigentuemer" name="eigentuemer" class="form-control" placeholder="Name des Grundstückseigentümers" required/>
+                                        <input type="text" id="eigentuemer" name="eigentuemer" class="form-control" placeholder="" required/>
                                         
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label for="denkmalschutz" class="form-label fw-bold">
-                                            Steht der Baum unter Denkmalschutz?
+                                            Denkmalschutz
                                             
                                         </label>
                                         
                                         <div class="form-check">
                                             <input type="checkbox" id="denkmalschutz" name="denkmalschutz" class="form-check-input" />
-                                            <label class="form-check-label" for="denkmalschutz">Steht der Baum unter Denkmalschutz?</label>
+                                            <label class="form-check-label" for="denkmalschutz">Denkmalschutz</label>
                                         </div>
                                         
                                     </div>
@@ -162,30 +162,22 @@ templ BaumfaellungForm() {
                             
                             <div class="mb-3">
                                 <label for="begruendung" class="form-label fw-bold">
-                                    Begründung der Fällung
+                                    Begruendung
                                     <span class="text-danger">*</span>
                                 </label>
                                 
-                                <textarea id="begruendung" name="begruendung" class="form-control" rows="4" placeholder="Bitte begründen Sie Ihren Antrag ausführlich..." required></textarea>
+                                <textarea id="begruendung" name="begruendung" class="form-control" rows="4" placeholder="" required></textarea>
                                 
                             </div>
                             
                             <div class="mb-3">
                                 <label for="massnahme" class="form-label fw-bold">
-                                    Art der Maßnahme
+                                    Massnahme
                                     <span class="text-danger">*</span>
                                 </label>
                                 
                                 <select id="massnahme" name="massnahme" class="form-select" required>
                                     <option value="">Bitte wählen...</option>
-                                    
-                                    <option value="Fällung">Fällung</option>
-                                    
-                                    <option value="Rückschnitt">Rückschnitt</option>
-                                    
-                                    <option value="Kronenpflege">Kronenpflege</option>
-                                    
-                                    <option value="Notfällung">Notfällung</option>
                                     
                                 </select>
                                 
@@ -193,7 +185,7 @@ templ BaumfaellungForm() {
                             
                             <div class="mb-3">
                                 <label for="dokument" class="form-label fw-bold">
-                                    Lageplan / Dokument (PDF)
+                                    Dokument
                                     
                                 </label>
                                 
@@ -203,7 +195,7 @@ templ BaumfaellungForm() {
                             
                             <div class="mb-3">
                                 <label for="fotos" class="form-label fw-bold">
-                                    Fotos des Baumes
+                                    Fotos
                                     
                                 </label>
                                 

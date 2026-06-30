@@ -4,7 +4,6 @@ package rest
 import (
 	// "bafoegservice/rest/middleware"
 	"bafoegservice/core"
-	"bafoegservice/core/log"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
@@ -56,14 +55,6 @@ func NewHandler(e *echo.Echo) {
 	//         }
 	//     }
 
-	// Operations for: "/"
-	g.GET("/", GetRoot)
-
-	// Operations for: "/bafoeg"
-	g.GET("/bafoeg", GetBafoegForm)
-	// Operations for: "/bafoeg"
-	g.POST("/bafoeg", CreateBafoeg)
-
 	// Operations for: "/bafoeg/:id"
 	g.DELETE("/bafoeg/:id", DeleteBafoegById)
 	// Operations for: "/bafoeg/:id"
@@ -71,6 +62,14 @@ func NewHandler(e *echo.Echo) {
 
 	// Operations for: "/index.html"
 	g.GET("/index.html", GetIndex)
+
+	// Operations for: "/"
+	g.GET("/", GetRoot)
+
+	// Operations for: "/bafoeg"
+	g.GET("/bafoeg", GetBafoegForm)
+	// Operations for: "/bafoeg"
+	g.POST("/bafoeg", CreateBafoeg)
 
 	// Call handler extensions
 	newHandlerExt(e)

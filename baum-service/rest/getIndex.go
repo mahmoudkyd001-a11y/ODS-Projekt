@@ -10,7 +10,6 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v5"
-	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 // successfully deliver index page

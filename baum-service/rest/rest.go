@@ -4,7 +4,6 @@ package rest
 import (
 	// "baumservice/rest/middleware"
 	"baumservice/core"
-	"baumservice/core/log"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
@@ -40,7 +39,7 @@ func NewHandler(e *echo.Echo) {
 	g := e.Group("")
 
 	// TODO: Make a validation with openAPI sense
-	// 	spec, err := middleware.ParseOpenAPISpecFile("public/baum_v2.yaml", e.AcquireContext())
+	// 	spec, err := middleware.ParseOpenAPISpecFile("public/baum.yaml", e.AcquireContext())
 	// 	if err != nil {
 	// 		e.Logger.Fatal(err)
 	// 	}
@@ -56,21 +55,21 @@ func NewHandler(e *echo.Echo) {
 	//         }
 	//     }
 
+	// Operations for: "/index.html"
+	g.GET("/index.html", GetIndex)
+
 	// Operations for: "/"
 	g.GET("/", GetRoot)
 
 	// Operations for: "/baumfaellung"
-	g.POST("/baumfaellung", CreateBaumfaellung)
-	// Operations for: "/baumfaellung"
 	g.GET("/baumfaellung", GetBaumfaellungForm)
+	// Operations for: "/baumfaellung"
+	g.POST("/baumfaellung", CreateBaumfaellung)
 
-	// Operations for: "/baumfaellung/:id"
-	g.DELETE("/baumfaellung/:id", DeleteBaumfaellungById)
 	// Operations for: "/baumfaellung/:id"
 	g.GET("/baumfaellung/:id", GetBaumfaellungById)
-
-	// Operations for: "/index.html"
-	g.GET("/index.html", GetIndex)
+	// Operations for: "/baumfaellung/:id"
+	g.DELETE("/baumfaellung/:id", DeleteBaumfaellungById)
 
 	// Call handler extensions
 	newHandlerExt(e)
