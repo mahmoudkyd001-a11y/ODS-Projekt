@@ -115,7 +115,15 @@ func generateHandler(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToo
 	database := req.GetBool("database", false)
 	frontend := req.GetBool("frontend", false)
 
-	args := []string{"run", ".", "generate", specPath, "-o", outputPath, "-n", projectName}
+	dredgerBin, err := findDredgerBinary()
+	if err != nil {
+		return &mcp.CallToolResult{
+			Content: []mcp.Content{mcp.NewTextContent("Could not find dredger binary: " + err.Error())},
+			IsError: true,
+		}, nil
+	}
+
+	args := []string{"generate", specPath, "-o", outputPath, "-n", projectName}
 	if database {
 		args = append(args, "-D")
 	}
@@ -123,7 +131,7 @@ func generateHandler(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToo
 		args = append(args, "-f")
 	}
 
-	cmd := exec.CommandContext(ctx, "go", args...)
+	cmd := exec.CommandContext(ctx, dredgerBin, args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &mcp.CallToolResult{
@@ -135,4 +143,30 @@ func generateHandler(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToo
 	return &mcp.CallToolResult{
 		Content: []mcp.Content{mcp.NewTextContent(fmt.Sprintf("Project generated successfully at %s\n%s", outputPath, string(output)))},
 	}, nil
+}
+
+func findDredgerBinary() (string, error) {
+	self, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	projectRoot := filepath.Dir(filepath.Dir(self))
+
+	candidates := []string{
+		filepath.Join(projectRoot, "build", "dredger"),
+		filepath.Join(projectRoot, "build", "dredger.exe"),
+		filepath.Join(projectRoot, "dredger"),
+		filepath.Join(projectRoot, "dredger.exe"),
+	}
+	for _, c := range candidates {
+		if _, err := os.Stat(c); err == nil {
+			return c, nil
+		}
+	}
+
+	if p, err := exec.LookPath("dredger"); err == nil {
+		return p, nil
+	}
+
+	return "", fmt.Errorf("dredger binary not found in %s/build/ or PATH", projectRoot)
 }
