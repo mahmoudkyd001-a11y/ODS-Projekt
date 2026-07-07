@@ -40,7 +40,7 @@ func main() {
 		<-sig
 		log.Info().Msg("main received shutdown signal")
 		cancel() // trigger shutdown of everything else
-		
+		()
 		echoCancel() // trigger shutdown echo
 	}()
 

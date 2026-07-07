@@ -4,7 +4,6 @@ package core
 import (
 	"flag"
     "baumservice/core/log"
-	"strings"
 	"os"
 
 	"github.com/joho/godotenv"

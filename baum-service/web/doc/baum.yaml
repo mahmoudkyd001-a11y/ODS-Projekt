@@ -2,28 +2,11 @@ openapi: "3.0.0"
 info:
   title: Baumfaellantrag
   version: "1.0.0"
+  x-ui-auth:
+    totp: true
+
 
 paths:
-  /index.html:
-    get:
-      operationId: getIndex
-      summary: Startseite anzeigen
-      tags:
-        - builtin
-      responses:
-        "200":
-          description: Startseite
-
-  /:
-    get:
-      operationId: getRoot
-      summary: Weiterleitung zur Startseite
-      tags:
-        - builtin
-      responses:
-        "200":
-          description: Startseite
-
   /baumfaellung:
     get:
       operationId: getBaumfaellungForm
@@ -44,32 +27,6 @@ paths:
         "201":
           description: Antrag erstellt
 
-  /baumfaellung/{id}:
-    get:
-      operationId: getBaumfaellungById
-      summary: Antrag nach ID abrufen
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Antrag gefunden
-    delete:
-      operationId: deleteBaumfaellungById
-      summary: Antrag löschen
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Antrag gelöscht
-
 components:
   schemas:
     Baumfaellung:
@@ -78,12 +35,7 @@ components:
       properties:
         vorname:
           type: string
-          x-ui-control: input
           x-ui-order: 1
-          x-ui-group: personal
-          x-ui-required: true
-          x-ui-placeholder: "z.B. Max"
-          x-ui-label: "Vorname des Antragstellers"
         nachname:
           type: string
           x-ui-control: "input"
@@ -92,82 +44,46 @@ components:
           x-ui-order: 2
         email:
           type: string
-          x-ui-control: email
-          x-ui-order: 3
-          x-ui-group: personal
           x-ui-required: true
-          x-ui-placeholder: "max.mustermann@email.de"
-          x-ui-label: "E-Mail Adresse"
-        telefon:
-          type: string
-          x-ui-control: "tel"
           x-ui-group: "personal"
-          x-ui-order: 4
         adresse:
           type: string
           x-ui-control: "input"
           x-ui-required: true
           x-ui-group: "personal"
-          x-ui-order: 5
         baumart:
           type: string
           x-ui-control: "input"
           x-ui-required: true
           x-ui-group: "baum"
-          x-ui-order: 6
         baumhoehe:
-          type: number
-          x-ui-control: number
-          x-ui-order: 7
-          x-ui-group: baum
           x-ui-required: true
-          x-ui-placeholder: "z.B. 12"
-          x-ui-label: "Baumhöhe in Metern"
         baumumfang:
           type: integer
-          x-ui-control: "number"
           x-ui-group: "baum"
-          x-ui-order: 8
-        antragsdatum:
-          type: string
-          x-ui-control: "date"
-          x-ui-required: true
-          x-ui-group: "baum"
-          x-ui-order: 9
         standort:
           type: string
-          x-ui-control: textarea
-          x-ui-order: 10
-          x-ui-group: baum
           x-ui-required: true
-          x-ui-placeholder: "Straße, Hausnummer, Grundstücksnummer..."
-          x-ui-label: "Genaue Lage des Baumes"
         eigentuemer:
           type: string
           x-ui-control: "input"
           x-ui-required: true
           x-ui-group: "baum"
-          x-ui-order: 11
         denkmalschutz:
           type: boolean
           x-ui-control: "checkbox"
           x-ui-group: "baum"
-          x-ui-order: 12
         begruendung:
           type: string
           x-ui-control: "textarea"
           x-ui-required: true
-          x-ui-order: 13
         massnahme:
           type: string
           x-ui-control: "select"
           x-ui-required: true
-          x-ui-order: 14
         dokument:
           type: string
           x-ui-control: "file"
-          x-ui-order: 15
         fotos:
           type: string
           x-ui-control: "file"
-          x-ui-order: 16

@@ -36,13 +36,13 @@ func Layout(title string, serviceName string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/pages/layout.templ`, Line: 8, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `bafoeg-service/web/pages/layout.templ`, Line: 8, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " – OZG-Portal</title><link rel=\"stylesheet\" href=\"/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/css/bootstrap-icons.min.css\"><style>\r\n            .navbar-brand { font-weight: 600; }\r\n            .sidebar { min-height: calc(100vh - 56px); border-right: 1px solid #dee2e6; }\r\n            .sidebar .nav-link { color: #495057; border-radius: 6px; }\r\n            .sidebar .nav-link:hover { background-color: #f8f9fa; color: #0d6efd; }\r\n            .sidebar .nav-link.active { background-color: #e7f1ff; color: #0d6efd; font-weight: 500; }\r\n            .main-content { background-color: #f8f9fa; min-height: calc(100vh - 56px); }\r\n            footer { border-top: 1px solid #dee2e6; }\r\n        </style></head><body><!-- Navbar --><nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" href=\"/\"><i class=\"bi bi-building me-2\"></i> OZG-Bürgerportal</a> <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\"><span class=\"navbar-toggler-icon\"></span></button><div class=\"collapse navbar-collapse\" id=\"navbarNav\"><ul class=\"navbar-nav me-auto\"><li class=\"nav-item\"><a class=\"nav-link\" href=\"/\"><i class=\"bi bi-house me-1\"></i>Start</a></li>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " – OZG-Portal</title><link rel=\"stylesheet\" href=\"/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/css/bootstrap-icons.min.css\"><style>\n            .navbar-brand { font-weight: 600; }\n            .sidebar { min-height: calc(100vh - 56px); border-right: 1px solid #dee2e6; }\n            .sidebar .nav-link { color: #495057; border-radius: 6px; }\n            .sidebar .nav-link:hover { background-color: #f8f9fa; color: #0d6efd; }\n            .sidebar .nav-link.active { background-color: #e7f1ff; color: #0d6efd; font-weight: 500; }\n            .main-content { background-color: #f8f9fa; min-height: calc(100vh - 56px); }\n            footer { border-top: 1px solid #dee2e6; }\n        </style></head><body><!-- Navbar --><nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" href=\"/\"><i class=\"bi bi-building me-2\"></i> OZG-Bürgerportal</a> <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\"><span class=\"navbar-toggler-icon\"></span></button><div class=\"collapse navbar-collapse\" id=\"navbarNav\"><ul class=\"navbar-nav me-auto\"><li class=\"nav-item\"><a class=\"nav-link\" href=\"/\"><i class=\"bi bi-house me-1\"></i>Start</a></li>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +54,7 @@ func Layout(title string, serviceName string) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/pages/layout.templ`, Line: 40, Col: 83}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `bafoeg-service/web/pages/layout.templ`, Line: 40, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -77,7 +77,7 @@ func Layout(title string, serviceName string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/pages/layout.templ`, Line: 72, Col: 83}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `bafoeg-service/web/pages/layout.templ`, Line: 72, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
