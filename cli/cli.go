@@ -58,6 +58,8 @@ var generateCmd = &cobra.Command{
 	Example: "  dredger generate api.yaml async.yaml moreasync.yaml -o ./out -n multi",
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		os.Setenv("GOWORK", "off")
+
 		if projectPath == "" {
 			projectPath = "src"
 		}
