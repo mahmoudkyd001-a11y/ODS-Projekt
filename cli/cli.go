@@ -142,11 +142,11 @@ var generateCmd = &cobra.Command{
 			extCmd.RunCommand("go mod init "+xstrings.FirstRuneToLower(xstrings.ToCamelCase(projectName)), projectDestination)
 		}
 
-		log.Info().Msg("RUN `goimports`")
-		extCmd.RunCommand("goimports -w .", projectDestination)
-
 		log.Info().Msg("RUN `go mod tidy`")
 		extCmd.RunCommand("go mod tidy", projectDestination)
+
+		log.Info().Msg("RUN `goimports`")
+		extCmd.RunCommand("goimports -w .", projectDestination)
 
 		log.Info().Msg("RUN `go fmt`")
 		extCmd.RunCommand("go fmt ./...", projectDestination)
