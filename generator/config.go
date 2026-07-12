@@ -38,8 +38,14 @@ func generateConfigFiles(serverConf ServerConfig) {
 	templateFile = "templates/common/core/version"
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 		createFileFromTemplate(filePath, templateFile, serverConf)
-		if err := os.Symlink(filePath, filepath.Join(Config.Path, fileName)); err != nil {
-			log.Warn().Err(err).Str("source", filePath).Str("target", filepath.Join(Config.Path, fileName)).Msg("Could not create symbolic Link, please create it manually")
+		linkPath := filepath.Join(Config.Path, fileName)
+		// symlink target must be relative to the link's own directory, not to the CWD
+		relTarget, err := filepath.Rel(filepath.Dir(linkPath), filePath)
+		if err != nil {
+			relTarget = filePath
+		}
+		if err := os.Symlink(relTarget, linkPath); err != nil {
+			log.Warn().Err(err).Str("source", relTarget).Str("target", linkPath).Msg("Could not create symbolic Link, please create it manually")
 		}
 	}
 }
