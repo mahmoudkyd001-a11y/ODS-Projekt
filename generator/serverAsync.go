@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"path/filepath"
 
 	asyncapiv3 "github.com/lerenn/asyncapi-codegen/pkg/asyncapi/v3"
 	"github.com/rs/zerolog/log"
@@ -37,7 +38,7 @@ func GenerateInternalFile(spec *asyncapiv3.Specification, genConf GeneratorConfi
 		Channels:   channelInfos,
 		ModuleName: genConf.ModuleName,
 	}
-	filePath := path.Join(genConf.OutputPath, AsyncPkg, "async"+".go")
+	filePath := filepath.Join(genConf.OutputPath, AsyncPkg, "async"+".go")
 	tmplPath := path.Join("templates", "asyncapi", AsyncPkg, "server", "internal.go.tmpl")
 	//filepath und tmplpath bestimmen und daraus dann die createFileFromTemplate(filepath, tmplPath und das c füllen)
 	/*log.Debug().Msgf("Extracted %d channels", len(channelInfos))
@@ -60,12 +61,12 @@ func GenerateSubscriberFiles(spec *asyncapiv3.Specification, genConf GeneratorCo
 
 	operations := extractOperations(spec, genConf)
 
-	basePath := path.Join(genConf.OutputPath, AsyncPkg, "subscribers")
+	basePath := filepath.Join(genConf.OutputPath, AsyncPkg, "subscribers")
 	tmplPath := path.Join("templates", "asyncapi", AsyncPkg, "server", "subscriber.go.tmpl")
 
 	for _, op := range operations {
 		fileName := fmt.Sprintf("%s.go", camelcase(op.OperationName))
-		filePath := path.Join(basePath, fileName)
+		filePath := filepath.Join(basePath, fileName)
 
 		createFileFromTemplate(filePath, tmplPath, op)
 	}

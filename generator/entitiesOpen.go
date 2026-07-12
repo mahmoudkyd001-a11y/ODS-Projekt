@@ -265,6 +265,8 @@ func toGoType(sRef *openapi3.SchemaRef) (goType string, nested bool) {
 		types := sRef.Value.Type.Slice()
 		if len(types) > 0 {
 			goType = types[0]
+		} else {
+			goType = "string"
 		}
 	}
 	return goType, nested

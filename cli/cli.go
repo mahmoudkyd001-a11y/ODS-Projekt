@@ -11,7 +11,6 @@ import (
 	"dredger/core"
 	gen "dredger/generator"
 
-	//genAsyncAPI "dredger/generator/asyncapi"
 	"dredger/parser"
 
 	"github.com/huandu/xstrings"
@@ -71,7 +70,7 @@ var generateCmd = &cobra.Command{
 
 		for _, specPath := range specPaths {
 			specPath = strings.TrimSpace(specPath)
-			if specPath == "" || specPath == "\\" {
+			if specPath == "" || specPath == "\\" || specPath == "/" {
 				// Ignore stray arguments from malformed line breaks
 				continue
 			}
@@ -120,7 +119,7 @@ var generateCmd = &cobra.Command{
 				}
 				openapi = true
 				allOpenAPINames = append(allOpenAPINames, gen.OpenAPIConfig{
-					OpenAPIPath: specPath,
+					OpenAPIPath: filepath.Base(specPath),
 				})
 			default:
 				log.Error().Msgf("Datei %s ist weder gültige AsyncAPI- noch gültige OpenAPI-Spec.", specPath)
@@ -139,16 +138,6 @@ var generateCmd = &cobra.Command{
 		if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 			log.Info().Msg("RUN `go mod init " + xstrings.FirstRuneToLower(xstrings.ToCamelCase(projectName)) + "`")
 			extCmd.RunCommand("go mod init "+xstrings.FirstRuneToLower(xstrings.ToCamelCase(projectName)), projectDestination)
-		}
-
-		workDir := filepath.Dir(projectDestination)
-		goWorkPath := filepath.Join(workDir, "go.work")
-		if _, err := os.Stat(goWorkPath); err == nil {
-			absProjectDest, _ := filepath.Abs(projectDestination)
-			absWorkDir, _ := filepath.Abs(workDir)
-			relPath, _ := filepath.Rel(absWorkDir, absProjectDest)
-			log.Info().Msg("RUN `go work use " + relPath + "`")
-			extCmd.RunCommandRaw("go work use "+relPath, absWorkDir)
 		}
 
 		log.Info().Msg("RUN `goimports`")
@@ -176,7 +165,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(showVersion)
 	generateCmd.Flags().StringVarP(&projectPath, "output", "o", "src", "Pfad, in dem der Code erzeugt wird")
 	generateCmd.Flags().StringVarP(&projectName, "name", "n", "default", "Modulname des erzeugten Codes")
 	generateCmd.Flags().BoolVarP(&databaseFlag, "database", "D", false, "füge SQLite3-Datenbank in den generierten Code ein")
