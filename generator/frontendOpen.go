@@ -124,6 +124,10 @@ func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 		spec.AddOperation("/events", http.MethodPost, op)
 	}
 
+	// SSE server for real-time UI updates (progress bars, notifications)
+	createFileFromTemplate(filepath.Join(conf.OutputPath, "core", "sse.go"), "templates/common/core/sse.go.tmpl", conf)
+	createFileFromTemplate(filepath.Join(restPath, "handleEvents.go"), "templates/openapi/rest/handleEvents.go.tmpl", conf)
+
 	log.Info().Msg("Created Frontend successfully.")
 	// NEU - Formulare generieren wenn Schemas mit x-label: "form" vorhanden
 	schemas := createSchemas(spec)

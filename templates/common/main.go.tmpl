@@ -54,6 +54,9 @@ func main() {
 		<-sig
 		log.Info().Msg("main received shutdown signal")
 		cancel() // trigger shutdown of everything else
+		{{- if .AddFrontend}}
+		core.SseServer.Close()
+		{{- end}}
 		echoCancel() // trigger shutdown echo
 	}()
 
