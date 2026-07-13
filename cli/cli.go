@@ -11,7 +11,6 @@ import (
 	"dredger/core"
 	gen "dredger/generator"
 
-	//genAsyncAPI "dredger/generator/asyncapi"
 	"dredger/parser"
 
 	"github.com/huandu/xstrings"
@@ -59,6 +58,8 @@ var generateCmd = &cobra.Command{
 	Example: "  dredger generate api.yaml async.yaml moreasync.yaml -o ./out -n multi",
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		os.Setenv("GOWORK", "off")
+
 		if projectPath == "" {
 			projectPath = "src"
 		}
@@ -71,7 +72,7 @@ var generateCmd = &cobra.Command{
 
 		for _, specPath := range specPaths {
 			specPath = strings.TrimSpace(specPath)
-			if specPath == "" || specPath == "\\" {
+			if specPath == "" || specPath == "\\" || specPath == "/" {
 				// Ignore stray arguments from malformed line breaks
 				continue
 			}
@@ -120,7 +121,7 @@ var generateCmd = &cobra.Command{
 				}
 				openapi = true
 				allOpenAPINames = append(allOpenAPINames, gen.OpenAPIConfig{
-					OpenAPIPath: specPath,
+					OpenAPIPath: filepath.Base(specPath),
 				})
 			default:
 				log.Error().Msgf("Datei %s ist weder gültige AsyncAPI- noch gültige OpenAPI-Spec.", specPath)
@@ -141,11 +142,11 @@ var generateCmd = &cobra.Command{
 			extCmd.RunCommand("go mod init "+xstrings.FirstRuneToLower(xstrings.ToCamelCase(projectName)), projectDestination)
 		}
 
-		log.Info().Msg("RUN `goimports`")
-		extCmd.RunCommand("goimports -w .", projectDestination)
-
 		log.Info().Msg("RUN `go mod tidy`")
 		extCmd.RunCommand("go mod tidy", projectDestination)
+
+		log.Info().Msg("RUN `goimports`")
+		extCmd.RunCommand("goimports -w .", projectDestination)
 
 		log.Info().Msg("RUN `go fmt`")
 		extCmd.RunCommand("go fmt ./...", projectDestination)
@@ -166,7 +167,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(showVersion)
 	generateCmd.Flags().StringVarP(&projectPath, "output", "o", "src", "Pfad, in dem der Code erzeugt wird")
 	generateCmd.Flags().StringVarP(&projectName, "name", "n", "default", "Modulname des erzeugten Codes")
 	generateCmd.Flags().BoolVarP(&databaseFlag, "database", "D", false, "füge SQLite3-Datenbank in den generierten Code ein")

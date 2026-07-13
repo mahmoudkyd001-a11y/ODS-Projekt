@@ -3,7 +3,14 @@
     "mcp-dredger": {
       "type": "stdio",
       "command": "${workspaceFolder}/mcp-dredger/mcp-dredger",
-      "args": ["-f", "${workspaceFolder}/examples/baum/baum.yaml"]
+      "args": [
+        "-f", "${workspaceFolder}/examples/baum/baum.yaml",
+        "-a", "${workspaceFolder}/examples/weather-example/asyncapi.yaml",
+        "-examples", "${workspaceFolder}/examples"
+      ],
+      "windows": {
+        "command": "${workspaceFolder}/mcp-dredger/mcp-dredger.exe"
+      }
     }
   }
 }

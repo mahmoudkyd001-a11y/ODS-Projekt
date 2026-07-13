@@ -160,8 +160,13 @@ func generateAsyncAPIDoc(conf GeneratorConfig) {
 		linkFilename := "AsyncAPI" + path.Ext(filename) // static filename for project root
 		linkPath := filepath.Join(Config.Path, linkFilename)
 		if !fs.CheckIfFileExists(linkPath) { // skip if file (symlink) exists
-			if err := os.Symlink(specPath, linkPath); err != nil {
-				log.Warn().Err(err).Str("source", specPath).Str("target", linkPath).Msg("Failed to create Symlink for AsyncAPI specification file")
+			// symlink target must be relative to the link's own directory, not to the CWD
+			relTarget, err := filepath.Rel(filepath.Dir(linkPath), specPath)
+			if err != nil {
+				relTarget = specPath
+			}
+			if err := os.Symlink(relTarget, linkPath); err != nil {
+				log.Warn().Err(err).Str("source", relTarget).Str("target", linkPath).Msg("Failed to create Symlink for AsyncAPI specification file")
 			}
 		}
 	}

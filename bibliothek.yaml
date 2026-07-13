@@ -1,0 +1,110 @@
+openapi: "3.0.0"
+info:
+  title: Bibliotheksverwaltung
+  version: "1.0.0"
+  description: REST-API zur Verwaltung einer Bibliothek
+
+paths:
+  /buecher:
+    get:
+      operationId: listBuecher
+      summary: Alle Bücher auflisten
+      responses:
+        "200":
+          description: Liste aller Bücher
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Buch"
+    post:
+      operationId: createBuch
+      summary: Neues Buch anlegen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Buch"
+      responses:
+        "201":
+          description: Buch erstellt
+
+  /buecher/{id}:
+    get:
+      operationId: getBuch
+      summary: Einzelnes Buch abrufen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Buch gefunden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Buch"
+        "404":
+          description: Buch nicht gefunden
+    delete:
+      operationId: deleteBuch
+      summary: Buch löschen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Buch gelöscht
+        "404":
+          description: Buch nicht gefunden
+
+  /buecher/{id}/ausleihe:
+    post:
+      operationId: createAusleihe
+      summary: Buch ausleihen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Buch ausgeliehen
+        "404":
+          description: Buch nicht gefunden
+        "409":
+          description: Buch nicht verfügbar
+
+components:
+  schemas:
+    Buch:
+      type: object
+      required:
+        - titel
+        - autor
+      properties:
+        id:
+          type: integer
+        titel:
+          type: string
+        autor:
+          type: string
+        isbn:
+          type: string
+        verfuegbar:
+          type: boolean
+        kategorie:
+          type: string
+          enum:
+            - Roman
+            - Sachbuch
+            - Fachbuch
+            - Kinderbuch

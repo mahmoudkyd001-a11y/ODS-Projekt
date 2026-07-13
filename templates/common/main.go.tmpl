@@ -56,7 +56,7 @@ func main() {
 		cancel() // trigger shutdown of everything else
 		{{- if .AddFrontend}}
 		core.SseServer.Close()
-        {{- end}}
+		{{- end}}
 		echoCancel() // trigger shutdown echo
 	}()
 

@@ -7,7 +7,9 @@ import (
 func updateOAPIOperation(op *openapi3.Operation, opID string, opSummary string, opDefault string) {
 	op.OperationID = opID
 	op.Summary = opSummary
-	op.Responses.Default().Value = op.Responses.Map()[opDefault].Value
+	if resp := op.Responses.Map()[opDefault]; resp != nil {
+		op.Responses.Set("default", resp)
+	}
 }
 
 func createOAPIResponse(rDesc string) *openapi3.Response {

@@ -133,6 +133,10 @@ func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 		spec.AddOperation("/events", http.MethodPost, op)
 	}
 
+	// SSE server for real-time UI updates (progress bars, notifications)
+	createFileFromTemplate(filepath.Join(conf.OutputPath, "core", "sse.go"), "templates/common/core/sse.go.tmpl", conf)
+	createFileFromTemplate(filepath.Join(restPath, "handleEvents.go"), "templates/openapi/rest/handleEvents.go.tmpl", conf)
+
 	log.Info().Msg("Created Frontend successfully.")
 	// NEU - Formulare generieren wenn Schemas mit x-label: "form" vorhanden
 	schemas := createSchemas(spec)
@@ -382,8 +386,13 @@ func generateOpenAPIDoc(conf GeneratorConfig) {
 	linkFilename := "OpenAPI" + path.Ext(template.OpenAPIFile) // static filename for project root
 	linkPath := filepath.Join(Config.Path, linkFilename)
 	if !fs.CheckIfFileExists(linkPath) { // skip it file (symlink) already exists
-		if err := os.Symlink(specPath, linkPath); err != nil {
-			log.Warn().Err(err).Str("source", specPath).Str("target", linkPath).Msg("Failed to create Symlink for OpenAPI specification file")
+		// symlink target must be relative to the link's own directory, not to the CWD
+		relTarget, err := filepath.Rel(filepath.Dir(linkPath), specPath)
+		if err != nil {
+			relTarget = specPath
+		}
+		if err := os.Symlink(relTarget, linkPath); err != nil {
+			log.Warn().Err(err).Str("source", relTarget).Str("target", linkPath).Msg("Failed to create Symlink for OpenAPI specification file")
 		}
 	}
 
