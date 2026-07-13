@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"slices"
-	"sort" 
+	"sort"
 	"strconv"
 	"strings"
 
@@ -25,6 +25,15 @@ func generateEmptyFrontend(_ *openapi3.T, conf GeneratorConfig) {
 
 func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 	generateOpenAPIDoc(conf)
+
+	// NEU am 01.07
+	if authExt, ok := spec.Info.Extensions["x-ui-auth"]; ok {
+		if authMap, ok := authExt.(map[string]interface{}); ok {
+			if totpVal, ok := authMap["totp"].(bool); ok {
+				conf.AuthConfig.AddTOTP = totpVal
+			}
+		}
+	}
 
 	// create folders
 	restPath := filepath.Join(conf.OutputPath, "rest")
@@ -128,26 +137,38 @@ func generateFrontend(spec *openapi3.T, conf GeneratorConfig) {
 	// NEU - Formulare generieren wenn Schemas mit x-label: "form" vorhanden
 	schemas := createSchemas(spec)
 	if schemas.IsNotEmpty {
-			type FormConfig struct {
-				GeneratorConfig
-				Schemas Schemas
-			}
-			formConf := FormConfig{
-				GeneratorConfig: conf,
-				Schemas:         schemas,
-			}
-			createFileFromTemplate(
-				filepath.Join(pagesPath, "layout.templ"),
-				"templates/common/web/pages/layout.templ.tmpl",
-				formConf,
-			)
-			createFileFromTemplate(
-				filepath.Join(pagesPath, "form.templ"),
-				"templates/common/web/pages/form.templ.tmpl",
-				formConf,
-			)
-			log.Info().Msg("Generated form templates from schema.")
+		type FormConfig struct {
+			GeneratorConfig
+			Schemas Schemas
 		}
+		formConf := FormConfig{
+			GeneratorConfig: conf,
+			Schemas:         schemas,
+		}
+		createFileFromTemplate(
+			filepath.Join(pagesPath, "layout.templ"),
+			"templates/common/web/pages/layout.templ.tmpl",
+			formConf,
+		)
+		createFileFromTemplate(
+			filepath.Join(pagesPath, "form.templ"),
+			"templates/common/web/pages/form.templ.tmpl",
+			formConf,
+		)
+		log.Info().Msg("Generated form templates from schema.")
+	}
+
+	// am 01.07
+	if conf.AuthConfig.AddTOTP {
+		createFileFromTemplate(filepath.Join(restPath, "authHandler.go"), "templates/openapi/rest/authHandler.go.tmpl", conf)
+		createFileFromTemplate(filepath.Join(restPath, "handlerExt.go"), "templates/openapi/rest/handlerExt.go.tmpl", conf)
+		createFileFromTemplate(filepath.Join(pagesPath, "register.templ"), "templates/common/web/pages/register.templ.tmpl", conf)
+		createFileFromTemplate(filepath.Join(pagesPath, "login.templ"), "templates/common/web/pages/login.templ.tmpl", conf)
+		createFileFromTemplate(filepath.Join(pagesPath, "totp_setup.templ"), "templates/common/web/pages/totp_setup.templ.tmpl", conf)
+		createFileFromTemplate(filepath.Join(pagesPath, "totp_verify.templ"), "templates/common/web/pages/totp_verify.templ.tmpl", conf)
+		log.Info().Msg("Generated TOTP auth templates.")
+	}
+
 }
 
 // function to get the port specified in the OpenAPI Spec
@@ -234,32 +255,32 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
 						tmpPropertyConf.UIGroup = propStr[start:end]
 					}
 
-                    if strings.Contains(propStr, "\"x-ui-order\":") {
-                            start := strings.Index(propStr, "\"x-ui-order\":") + len("\"x-ui-order\":")
-                            end := start
-                    		for end < len(propStr) && propStr[end] != ',' && propStr[end] != '}' {
-                                    end++
-                            }
-                            orderStr := strings.TrimSpace(propStr[start:end])
-                            if order, err := strconv.Atoi(orderStr); err == nil {
-                                    tmpPropertyConf.UIOrder = order
-                            }
-                    }
+					if strings.Contains(propStr, "\"x-ui-order\":") {
+						start := strings.Index(propStr, "\"x-ui-order\":") + len("\"x-ui-order\":")
+						end := start
+						for end < len(propStr) && propStr[end] != ',' && propStr[end] != '}' {
+							end++
+						}
+						orderStr := strings.TrimSpace(propStr[start:end])
+						if order, err := strconv.Atoi(orderStr); err == nil {
+							tmpPropertyConf.UIOrder = order
+						}
+					}
 					// x-ui-options lesen (für Dropdown-Optionen)
 
-                    if strings.Contains(propStr, "\"x-ui-options\":") {
-                        start := strings.Index(propStr, "\"x-ui-options\":[") + len("\"x-ui-options\":[")
-                        end := strings.Index(propStr[start:], "]") + start
-                        optionsStr := propStr[start:end]
-                        options := strings.Split(optionsStr, ",")
-                        for _, opt := range options {
-                            opt = strings.TrimSpace(opt)
-                            opt = strings.Trim(opt, "\"")
-                            if opt != "" {
-                                tmpPropertyConf.UIOptions = append(tmpPropertyConf.UIOptions, opt)
-                            }
-                        }
-                    }
+					if strings.Contains(propStr, "\"x-ui-options\":") {
+						start := strings.Index(propStr, "\"x-ui-options\":[") + len("\"x-ui-options\":[")
+						end := strings.Index(propStr[start:], "]") + start
+						optionsStr := propStr[start:end]
+						options := strings.Split(optionsStr, ",")
+						for _, opt := range options {
+							opt = strings.TrimSpace(opt)
+							opt = strings.Trim(opt, "\"")
+							if opt != "" {
+								tmpPropertyConf.UIOptions = append(tmpPropertyConf.UIOptions, opt)
+							}
+						}
+					}
 
 					// x-ui-placeholder lesen
 					if strings.Contains(propStr, "\"x-ui-placeholder\":") {
@@ -279,10 +300,10 @@ func createSchemas(spec *openapi3.T) (schemas Schemas) {
 
 					schema.Properties = append(schema.Properties, tmpPropertyConf)
 				}
-				
+
 				sort.Slice(schema.Properties, func(i, j int) bool {
-                    return schema.Properties[i].UIOrder < schema.Properties[j].UIOrder
-                })
+					return schema.Properties[i].UIOrder < schema.Properties[j].UIOrder
+				})
 
 				// NEU - Felder nach Gruppen gruppieren
 				groupMap := make(map[string]*GroupConf)
@@ -336,6 +357,7 @@ func toString(inputArray []reflect.Value) (resultArray []string) {
 }
 
 func generateOpenAPIDoc(conf GeneratorConfig) {
+
 	// create folder
 	type templateConfig struct {
 		GeneratorConfig

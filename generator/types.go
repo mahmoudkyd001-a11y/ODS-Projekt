@@ -9,6 +9,7 @@ type Flags struct {
 
 type AuthConfig struct {
 	AddAuth            bool
+	AddTOTP            bool //neu am 01.07 hinzugefügtg
 	ApiKeyHeaderName   string
 	ApiKeySecurityName string
 }
@@ -69,17 +70,17 @@ type Listing struct {
 }
 
 type OperationConfig struct {
-	ModuleName  string
-	Method      string
-	Summary     string
-	OperationID string
-	Schema      string
-	AddAuth     bool
-	PathParams  map[string]string
-	QueryParams map[string]string
-	Responses   []ResponseConfig 
+	ModuleName        string
+	Method            string
+	Summary           string
+	OperationID       string
+	Schema            string
+	AddAuth           bool
+	PathParams        map[string]string
+	QueryParams       map[string]string
+	Responses         []ResponseConfig
 	IsFormHandler     bool   // NEU: ist das ein Form-GET Handler?
-    FormComponentName string // NEU: Name der Form-Komponente
+	FormComponentName string // NEU: Name der Form-Komponente
 }
 
 type PathConfig struct {
@@ -108,14 +109,15 @@ type SchemaConf struct {
 	H1Name        string // correct grammar, spaces allowed
 	ComponentName string // first letter upper case, no spaces
 	Properties    []PropertyConf
-	Groups        []GroupConf  // NEU: Felder nach Gruppen gruppiert
-    HasGroups     bool         // NEU: gibt es Gruppen?
+	Groups        []GroupConf // NEU: Felder nach Gruppen gruppiert
+	HasGroups     bool        // NEU: gibt es Gruppen?
 	Methods       []MethodConf
 }
+
 // struct für eine Gruppe von Properties
 type GroupConf struct {
-    Name       string
-    Properties []PropertyConf
+	Name       string
+	Properties []PropertyConf
 }
 
 // struct for each property of a schema
@@ -124,13 +126,13 @@ type PropertyConf struct {
 	LabelName string
 	Type      string
 	// NEU - generische UI Attribute:
-	UIControl  string // "input", "select", "textarea", "checkbox", "file"
-	UIOrder    int    // Reihenfolge im Formular
-	UIRequired bool   // Pflichtfeld ja/nein
-	UIGroup    string // Gruppierung von Feldern
-	UIOptions  []string  // NEU: Optionen für select
-	UIPlaceholder string  // NEU
-    UILabel       string  // NEU
+	UIControl     string   // "input", "select", "textarea", "checkbox", "file"
+	UIOrder       int      // Reihenfolge im Formular
+	UIRequired    bool     // Pflichtfeld ja/nein
+	UIGroup       string   // Gruppierung von Feldern
+	UIOptions     []string // NEU: Optionen für select
+	UIPlaceholder string   // NEU
+	UILabel       string   // NEU
 }
 
 // struct for each method a schema has

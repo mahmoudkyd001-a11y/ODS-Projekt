@@ -6,8 +6,6 @@ import (
 	"baumservice/core/tracing"
 	"baumservice/entities"
 	"baumservice/rest/middleware"
-	"baumservice/usecases"
-	"baumservice/web/pages"
 
 	"encoding/json"
 	"encoding/xml"
