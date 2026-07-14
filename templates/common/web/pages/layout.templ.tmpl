@@ -47,7 +47,11 @@ templ Layout(title string, serviceName string) {
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
+{{- if .AddTOTP }}
+                            <a class="nav-link" href="/auth/login"><i class="bi bi-person-circle me-1"></i>Anmelden</a>
+{{- else }}
                             <a class="nav-link" href="#"><i class="bi bi-person-circle me-1"></i>Anmelden</a>
+{{- end }}
                         </li>
                     </ul>
                 </div>
@@ -79,20 +83,22 @@ templ Layout(title string, serviceName string) {
                             </a>
                         </li>
                     </ul>
+{{- if .AddTOTP }}
                     <hr/>
                     <p class="text-muted small fw-bold mb-2">KONTO</p>
                     <ul class="nav flex-column gap-1">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-person me-2"></i>Profil
+                            <a class="nav-link" href="/auth/login">
+                                <i class="bi bi-person me-2"></i>Anmelden
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="/auth/register">
                                 <i class="bi bi-shield-lock me-2"></i>2FA / TOTP
                             </a>
                         </li>
                     </ul>
+{{- end }}
                 </div>
 
                 <!-- Hauptinhalt -->

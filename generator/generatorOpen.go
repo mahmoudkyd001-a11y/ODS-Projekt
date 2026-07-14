@@ -74,6 +74,14 @@ func GenerateServer(conf GeneratorConfig) error {
 		}
 	}
 
+	if authExt, ok := spec.Info.Extensions["x-ui-auth"]; ok {
+		if authMap, ok := authExt.(map[string]interface{}); ok {
+			if totpVal, ok := authMap["totp"].(bool); ok {
+				conf.AuthConfig.AddTOTP = totpVal
+			}
+		}
+	}
+
 	createProjectPathDirectory(conf)
 
 	if conf.AddFrontend {

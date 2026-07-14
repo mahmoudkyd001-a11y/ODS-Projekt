@@ -217,7 +217,7 @@ func generateHandlerFuncs(spec *openapi3.T, genConf GeneratorConfig) {
 	fileName = "restSvc.go"
 	filePath = filepath.Join(Config.Path, RestPkg, fileName)
 	templateFile = "templates/openapi/rest/restSvc.go.tmpl"
-	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) && !genConf.AddTOTP {
 		createFileFromTemplate(filePath, templateFile, conf)
 	}
 
