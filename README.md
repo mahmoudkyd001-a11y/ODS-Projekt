@@ -111,6 +111,33 @@ go run main.go generate ./spec1.yaml ./spec2.yaml ./async1.json ./async2.json \
 If the schema file cannot be found, validation is skipped and the code is still
 generated.
 
+## OZG Microservice
+
+To generate an administrative application website, create a new folder in examples and write an API-specification (the built-in MCP-Server might help you) from which the application will be generated. Follow the steps in [Usage](#Usage) (data path must be adjusted) to finalize the code generation. To start a server, you need a working streams editor environment. Go into the generated folder and run:
+
+```bash
+sed -i 's|core.SseServer.Close()||g' main.go
+templ generate
+GOWORK=off go run main.go mainSvc.go
+```
+
+For MAC the sed command needs to be:
+
+```bash
+sed -i '' 's|core.SseServer.Close()||g' main.go
+```
+
+Open a homepage with a [localhost](http://localhost:8080/). The administrative application is accessible by extending the link by the folder's name.
+
+### OTP
+
+With the added AddTOTP bool, an authentication service can be generated for your website. To use this, simply put:
+
+    x-ui-auth:
+        totp: true
+
+at the start of your specification.
+
 # Limitations
 
 - Add a AsyncAPI Info Title if multiple specs are used! (You can have one spec file without one)
@@ -121,5 +148,7 @@ generated.
 The origin of this project was made by 6 students (A. Uluc, A. Munteau, O. Rosenblatt, J. Wilke, C. Szramek, F. Yzeiri) of the TU Berlin as part of the module "Moderne Verteilte Anwendungen Programmierpraktikum" when studying B.Sc Computer Science and could be found at https://github.com/MVA-OpenApi/go-open-api-generator.
 
 The work on the AsyncAPI - Compatibility was done by 4 more students (E. To, A. Gaydikhovych, K. Eichler, T. Hillerscheid) of the TU Berlin as part of the same module in the year 2025.
+
+The work on the OZG microservice was done by 5 more students (Y. Isroilova, M. Kayed, S. Murtazova, S.L.P.A.S. Sroka, L. Tober) of the TU Berlin as part of the same module in 2026
 
 Further contributors: J. Gottschick, G. Buchholz
