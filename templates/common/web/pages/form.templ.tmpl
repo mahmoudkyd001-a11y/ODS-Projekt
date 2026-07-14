@@ -168,14 +168,20 @@ templ {{.ComponentName}}Form() {
                                                            return true;
                                                        }
 
-                                                       if (total > 0) {
+                                                        if (total > 0) {
                                                            nextBtn.addEventListener("click", function () {
-                                                               if (!validateStep(current)) return;
                                                                if (current < total - 1) show(current + 1);
                                                            });
                                                            backBtn.addEventListener("click", function () {
                                                                if (current > 0) show(current - 1);
                                                            });
+                                                           for (var p = 0; p < pills.length; p++) {
+                                                               pills[p].style.cursor = "pointer";
+                                                               pills[p].addEventListener("click", function () {
+                                                                   var target = parseInt(this.getAttribute("data-pill"));
+                                                                   show(target);
+                                                               });
+                                                           }
                                                            show(0);
                                                        }
                                                    })();

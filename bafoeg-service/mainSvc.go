@@ -1,0 +1,25 @@
+// Edit this file, as it is a specific for your service
+package main
+
+import (
+	"bafoegservice/core/log"
+	"context"
+
+	"github.com/labstack/echo/v5"
+)
+
+func mainSvc(ctx context.Context, e *echo.Echo) {
+	/***** Start Services *****/
+	// Add your own evaluation of the flags for additional commands
+	// Add your own service running concurrent with the echo web service
+
+	// e.Use(middleware.PolicyHandler) // Policy Enforcement Point to check access
+
+	/***** Shutdown Handling ******/
+	<-ctx.Done() // wait for shutdown signal via context
+	log.Info().Msg("mainSvc received shutdown signal")
+
+	// Stop you custom running services here
+
+	log.Info().Msg("mainSvc exited")
+}
