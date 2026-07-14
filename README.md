@@ -26,6 +26,8 @@ Prerequisite for HTTP/2 is a TLS connection, to generate a quick localhost certi
 
 [just](https://github.com/casey/just)
 
+[templ](https://templ.guide/) (Required for frontend code generation with `-f`)
+
 # Usage
 
 _dredger_ is a command line tool:
@@ -34,7 +36,6 @@ _dredger_ is a command line tool:
 
 - completion Generate the autocompletion script for the specified shell
 - generate Create server and client API code from OpenApi Spec
-- generate-bdd Create BDD test file from the feature file
 - help Help about any command
 
 Flags:
@@ -113,21 +114,25 @@ generated.
 
 ## OZG Microservice
 
-To generate an administrative application website, create a new folder in examples and write an API-specification (the built-in MCP-Server might help you) from which the application will be generated. Follow the steps in [Usage](#Usage) (data path must be adjusted) to finalize the code generation. To start a server, you need a working streams editor environment. Go into the generated folder and run:
+To generate an administrative application website, create a new folder in examples and write an API-specification (the built-in MCP-Server might help you) from which the application will be generated. Make sure to pass the `-f` flag for frontend generation. Then go into the generated folder and run:
 
 ```bash
-sed -i 's|core.SseServer.Close()||g' main.go
+go run main.go generate ./examples/myspec/myspec.yaml -f -o ./myservice -n myservice
+cd myservice
 templ generate
-GOWORK=off go run main.go mainSvc.go
+GOWORK=off go run .
 ```
 
-For MAC the sed command needs to be:
+On Windows (PowerShell):
 
-```bash
-sed -i '' 's|core.SseServer.Close()||g' main.go
+```powershell
+go run main.go generate .\examples\myspec\myspec.yaml -f -o .\myservice -n myservice
+cd myservice
+templ generate
+$env:GOWORK="off"; go run .
 ```
 
-Open a homepage with a [localhost](http://localhost:8080/). The administrative application is accessible by extending the link by the folder's name.
+Open a homepage with a [localhost](http://localhost:8080/).
 
 ### OTP
 
@@ -138,24 +143,24 @@ With the added AddTOTP bool, an authentication service can be generated for your
 
 at the start of your specification.
 
-## MCP Server
+### MCP Server
 
 The `mcp-dredger` MCP server exposes loaded API specifications as context for AI assistants via the Model Context Protocol (stdio). The server reads the provided OpenAPI and AsyncAPI specifications and makes their contents (endpoints, schemas, channels, etc.) available to the AI assistant.
 
-### Build
+## Build
 
 ```bash
 cd mcp-dredger
 go build -o mcp-dredger .
 ```
 
-### Flags
+## Flags
 
 - `-f [path]` Path to the OpenAPI specification file to load.
 - `-a [path]` Path to the AsyncAPI specification file to load.
 - `-examples [path]` Path to a directory with additional specifications the server can reference.
 
-### IDE Integration
+## IDE Integration
 
 Pre-configured MCP server settings are included in the repository for VS Code (`.vscode/mcp.json`) and Zed (`.zed/settings.json`).
 
@@ -170,6 +175,6 @@ The origin of this project was made by 6 students (A. Uluc, A. Munteau, O. Rosen
 
 The work on the AsyncAPI - Compatibility was done by 4 more students (E. To, A. Gaydikhovych, K. Eichler, T. Hillerscheid) of the TU Berlin as part of the same module in the year 2025.
 
-The work on the OZG microservice was done by 5 more students (Y. Isroilova, M. Kayed, S. Murtazova, S.L.P.A.S. Sroka, L. Tober) of the TU Berlin as part of the same module in 2026
+The work on the OZG microservice was done by 5 more students (Y. Isroilova, M. Kayed, S. Murtazova, S. Sroka, L. Tober) of the TU Berlin as part of the same module in 2026
 
 Further contributors: J. Gottschick, G. Buchholz
